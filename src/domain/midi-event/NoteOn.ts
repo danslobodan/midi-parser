@@ -10,12 +10,16 @@
 // "PPP PPPP" is the pitch value (from 0 to 127) - middle C = 60, C# = 61, D = 62
 // "VVV VVVV" is the velocity value (from 0 to 127)
 
-//
+class NoteOn {
+    public channel: Channel;
+    public pitch: Pitch;
+    public velocity: Velocity;
 
-interface NoteOn {
-    statusByte: number;
-    dataByte1: number;
-    dataByte2: number;
+    constructor(statusByte: number, dataByte1: number, dataByte2: number) {
+        this.channel = new Channel(statusByte);
+        this.pitch = new Pitch(dataByte1);
+        this.velocity = new Velocity(dataByte2);
+    }
 }
 
 export type { NoteOn };
