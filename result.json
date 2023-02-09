@@ -1,0 +1,512 @@
+{
+  "header": {
+    "midiIdentifier": "4d546864",
+    "headerSize": 6,
+    "fileFormat": 1,
+    "numberOfTracks": 4,
+    "timeDivision": 480
+  },
+  "tracks": [
+    {
+      "header": "4d54726b",
+      "lengthBytes": 41,
+      "events": [
+        {
+          "name": "Track Name",
+          "type": 255,
+          "metaType": 3,
+          "data": "Midi_34_1",
+          "deltaTime": 0
+        },
+        {
+          "name": "Set tempo",
+          "type": 255,
+          "metaType": 81,
+          "data": 500000,
+          "deltaTime": 0
+        },
+        {
+          "name": "Time Signature",
+          "type": 255,
+          "metaType": 88,
+          "data": [
+            3,
+            2,
+            24,
+            8
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Time Signature",
+          "type": 255,
+          "metaType": 88,
+          "data": [
+            5,
+            2,
+            24,
+            8
+          ],
+          "deltaTime": 1440
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "data": [],
+          "deltaTime": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 68,
+      "events": [
+        {
+          "name": "Track Name",
+          "type": 255,
+          "metaType": 3,
+          "data": "Piano",
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            55,
+            100
+          ],
+          "deltaTime": 480
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            58,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            64,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            55,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            58,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            64,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            55,
+            100
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            58,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            64,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            55,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            58,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            64,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            55,
+            100
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            58,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            64,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "data": [],
+          "deltaTime": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 25,
+      "events": [
+        {
+          "name": "Track Name",
+          "type": 255,
+          "metaType": 3,
+          "data": "Bass",
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            48,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "data": [
+            48,
+            64
+          ],
+          "deltaTime": 120
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 0,
+          "data": [
+            48,
+            100
+          ],
+          "deltaTime": 1320
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "data": [],
+          "deltaTime": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 96,
+      "events": [
+        {
+          "name": "Track Name",
+          "type": 255,
+          "metaType": 3,
+          "data": "Drums",
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            36,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            36,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            38,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            38,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            38,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            38,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "data": [
+            42,
+            64
+          ],
+          "deltaTime": 240
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            36,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": 9,
+          "data": [
+            42,
+            100
+          ],
+          "deltaTime": 0
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "data": [],
+          "deltaTime": 0
+        }
+      ]
+    }
+  ]
+}

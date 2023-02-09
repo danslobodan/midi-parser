@@ -1,11 +1,11 @@
-interface IDataBuffer {
+interface IDataStream {
     movePointer: (_bytes: number) => number;
     readInt: (_bytes: number) => number;
     readStr: (_bytes: number) => string;
     readIntVariableLengthValue: () => number;
 }
 
-class DataBuffer implements IDataBuffer {
+class DataStream implements IDataStream {
     private data: DataView;
     private pointer: number = 0;
 
@@ -71,5 +71,5 @@ class DataBuffer implements IDataBuffer {
     }
 }
 
-export { DataBuffer };
-export type { IDataBuffer };
+export { DataStream };
+export type { IDataStream };

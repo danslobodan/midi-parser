@@ -11,6 +11,7 @@
 // "VVV VVVV" is the velocity value (from 0 to 127)
 
 class NoteOn {
+    public name = "Note On";
     public channel: Channel;
     public pitch: Pitch;
     public velocity: Velocity;

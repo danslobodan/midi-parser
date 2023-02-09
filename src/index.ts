@@ -1,35 +1,31 @@
 import fs from "fs";
-import { MidiFile } from "./domain/MidiFile";
+import { DataStream } from "./DataStream";
+import { decodeMidi } from "./domain/MidiFile";
+import { Uint8ToMidi } from "./old/MidiParser";
 
 const start = () => {
     console.log("Program Started");
 
     const data = fs.readFileSync("midi34.mid");
+    const dataView = new DataView(
+        data.buffer,
+        data.byteOffset,
+        data.byteLength
+    );
+    const dataStream = new DataStream(dataView);
+    const midiFile = decodeMidi(dataStream);
 
-    const midiIdentifier = data.readUint32BE();
+    console.log(
+        midiFile.tracks[0].lengthBytes,
+        midiFile.tracks[0].events.length
+    );
 
-    console.log(midiIdentifier);
-    if (midiIdentifier !== 0x4d546864) {
-        console.error("Header invalid");
-        return;
-    }
+    const old = Uint8ToMidi(dataView);
 
-    const headerSize = data.readUint32BE(4);
-    const fileFormat = data.readUint16BE(8);
-    const numberOfTracks = data.readUint16BE(10);
-    const timeDivision = data.readUint16BE(12);
+    if (old) console.log(old.track[0].lengthBytes, old.track[0].events.length);
 
-    const midiFile: MidiFile = {
-        header: {
-            midiIdentifier,
-            headerSize,
-            fileFormat,
-            numberOfTracks,
-            timeDivision,
-        },
-    };
-
-    console.log(midiFile);
+    fs.writeFileSync("result.json", JSON.stringify(midiFile, null, 2));
+    fs.writeFileSync("old.json", JSON.stringify(old, null, 2));
 };
 
 start();

@@ -1,24 +1,26 @@
-import { DataBuffer, IDataBuffer } from "../DataBuffer";
+import { DataStream, IDataStream } from "../DataStream";
 
-export const parse = (input: Uint8Array | string) => {
-    if (input instanceof Uint8Array) return Uint8ToMidi(input);
-    else if (typeof input === "string") return base64ToMidi(input);
-    else throw new Error("MidiParser.parse() : Invalid input provided");
-};
+// export const parse = (input: Uint8Array | string) => {
+//     if (input instanceof Uint8Array) return Uint8ToMidi(input);
+//     else if (typeof input === "string") return base64ToMidi(input);
+//     else throw new Error("MidiParser.parse() : Invalid input provided");
+// };
 
 interface MIDI {
     headerSize: number;
     formatType: number;
-    tracks: number;
+    numberOfTracks: number;
     track: Track[];
     timeDivision: number[] | number;
 }
 
 interface Track {
+    lengthBytes: number;
     events: MidiEvent[];
 }
 
 interface MidiEvent {
+    name: string;
     data: number[] | number | string;
     deltaTime: number;
     type: number;
@@ -32,13 +34,8 @@ interface RegularEvent extends MidiEvent {
     channel: number;
 }
 
-const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
-    const data = new DataView(
-        FileAsUint8Array.buffer,
-        FileAsUint8Array.byteOffset,
-        FileAsUint8Array.byteLength
-    ); // 8 bits bytes file data array
-    const buffer: IDataBuffer = new DataBuffer(data);
+export const Uint8ToMidi = (data: DataView) => {
+    const buffer: IDataStream = new DataStream(data);
 
     //  ** read FILE HEADER
     if (buffer.readInt(4) !== 0x4d546864) {
@@ -51,24 +48,24 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
     const MIDI: MIDI = {
         headerSize: buffer.readInt(4), // header size (unused var), getted just for read pointer movement
         formatType: buffer.readInt(2), // get MIDI Format Type
-        tracks: buffer.readInt(2), // get ammount of track chunks
-        track: [], // create array key for track data storing
+        numberOfTracks: buffer.readInt(2), // get ammount of track chunks
         timeDivision: getTimeDivision(buffer),
+        track: [], // create array key for track data storing
     };
 
     //  ** read TRACK CHUNK
-    for (let t = 1; t <= MIDI.tracks; t++) {
+    for (let t = 1; t <= MIDI.numberOfTracks; t++) {
         // create new Track entry in Array
-        MIDI.track[t - 1] = { events: [] };
         let headerValidation = buffer.readInt(4);
 
         // EOF
-        if (headerValidation === -1) break;
+        if (headerValidation === END_OF_FILE) break;
         // Track chunk header validation failed.
         if (headerValidation !== 0x4d54726b) return false;
 
+        const length = buffer.readInt(4);
         // move pointer. get chunk size (bytes length)
-        buffer.readInt(4);
+        MIDI.track[t - 1] = { lengthBytes: length, events: [] };
 
         // init event counter
         let eventIndex = 0;
@@ -91,7 +88,7 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
             statusByte = buffer.readInt(1);
 
             // EOF
-            if (statusByte === -1) break;
+            if (statusByte === END_OF_FILE) break;
             // NEW STATUS BYTE DETECTED
             else if (statusByte >= 128) laststatusByte = statusByte;
             // 'RUNNING STATUS' situation detected
@@ -111,8 +108,8 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
             MIDI.track[t - 1].events[eventIndex - 1] = midiEvent;
 
             if (
-                midiEvent.type === -1 ||
-                (midiEvent as MetaEvent)?.metaType === -1
+                midiEvent.type === END_OF_FILE ||
+                (midiEvent as MetaEvent)?.metaType === END_OF_FILE
             )
                 endOfTrack = true;
         }
@@ -121,7 +118,7 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
     return MIDI;
 };
 
-const getTimeDivision = (file: IDataBuffer) => {
+const getTimeDivision = (file: IDataStream) => {
     let timeDivisionByte1 = file.readInt(1); // get Time Division first byte
     let timeDivisionByte2 = file.readInt(1); // get Time Division second byte
 
@@ -150,12 +147,13 @@ const SET_TEMPO = 0x51;
 const SMPTE_OFFSET = 0x54;
 const TIME_SIGNATURE = 0x58;
 
-const getMetaEvent = (file: IDataBuffer, deltaTime: number): MetaEvent => {
+const getMetaEvent = (file: IDataStream, deltaTime: number): MetaEvent => {
     const metaEvent: MetaEvent = {
-        data: [],
-        deltaTime,
+        name: "Meta Event",
         type: 0xff, // assign metaEvent code to array
         metaType: file.readInt(1), // assign metaEvent subtype
+        data: [],
+        deltaTime,
     };
 
     let metaEventLength = file.readIntVariableLengthValue(); // get the metaEvent length
@@ -215,7 +213,7 @@ const SYSTEM_EXCLUSIVE_EVENT = 0xf;
 const END_OF_FILE = -1;
 
 const getRegularEvent = (
-    file: IDataBuffer,
+    file: IDataStream,
     deltaTime: number,
     statusByte: number
 ): RegularEvent => {
@@ -225,11 +223,14 @@ const getRegularEvent = (
     // force 2 digits
     if (!hexByte[1]) hexByte.unshift("0");
 
+    const type = parseInt(hexByte[0], 16);
+
     const regularEvent: RegularEvent = {
+        name: getName(type),
+        type, // first byte is EVENT TYPE ID
+        channel: parseInt(hexByte[1], 16), // second byte is channel
         data: [],
         deltaTime,
-        type: parseInt(hexByte[0], 16), // first byte is EVENT TYPE ID
-        channel: parseInt(hexByte[1], 16), // second byte is channel
     };
 
     switch (regularEvent.type) {
@@ -261,66 +262,85 @@ const getRegularEvent = (
     return regularEvent;
 };
 
-const base64ToMidi = (base64String: string) => {
-    const raw = atob(base64String);
-
-    const rawLength = raw.length;
-    const uint8Array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) uint8Array[i] = raw.charCodeAt(i);
-
-    console.log(uint8Array);
-
-    return Uint8ToMidi(uint8Array);
-};
-
-const atob = (inputString: string) => {
-    // base64 character set, plus padding character (=)
-    const b64 =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-
-    // Regular expression to check formal correctness of base64 encoded strings
-    const b64re =
-        /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
-
-    // remove data type signatures at the begining of the string
-    // eg :  "data:audio/mid;base64,"
-    let string = inputString.replace(/^.*?base64,/, "");
-
-    // atob can work with strings with whitespaces, even inside the encoded part,
-    // but only \t, \n, \f, \r and ' ', which can be stripped.
-    string = String(string).replace(/[\t\n\f\r ]+/g, "");
-
-    if (!b64re.test(string))
-        throw new TypeError(
-            "Failed to execute _atob() : The string to be decoded is not correctly encoded."
-        );
-
-    // Adding the padding if missing, for simplicity
-    string += "==".slice(2 - (string.length & 3));
-
-    let bitmap,
-        result = "";
-    let r1, r2;
-
-    for (let i = 0; i < string.length; ) {
-        bitmap =
-            (b64.indexOf(string.charAt(i++)) << 18) |
-            (b64.indexOf(string.charAt(i++)) << 12) |
-            ((r1 = b64.indexOf(string.charAt(i++))) << 6) |
-            (r2 = b64.indexOf(string.charAt(i++)));
-
-        result +=
-            r1 === 64
-                ? String.fromCharCode((bitmap >> 16) & 255)
-                : r2 === 64
-                ? String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255)
-                : String.fromCharCode(
-                      (bitmap >> 16) & 255,
-                      (bitmap >> 8) & 255,
-                      bitmap & 255
-                  );
+const getName = (type: number) => {
+    switch (type) {
+        case NOTE_ON:
+            return "Note On";
+        case NOTE_OFF:
+            return "Note Off";
+        case NOTE_AFTERTOUCH:
+            return "Note Aftertouch";
+        case CONTROLLER:
+            return "Controller";
+        case PROGRAM_CHANGE:
+            return "Program Change";
+        case CHANNEL_AFTERTOUCH:
+            return "Channel Aftertouch";
+        default:
+            return "Unknown";
     }
-
-    return result;
 };
+
+// const base64ToMidi = (base64String: string) => {
+//     const raw = atob(base64String);
+
+//     const rawLength = raw.length;
+//     const uint8Array = new Uint8Array(new ArrayBuffer(rawLength));
+
+//     for (let i = 0; i < rawLength; i++) uint8Array[i] = raw.charCodeAt(i);
+
+//     console.log(uint8Array);
+
+//     return Uint8ToMidi(uint8Array);
+// };
+
+// const atob = (inputString: string) => {
+//     // base64 character set, plus padding character (=)
+//     const b64 =
+//         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+//     // Regular expression to check formal correctness of base64 encoded strings
+//     const b64re =
+//         /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
+
+//     // remove data type signatures at the begining of the string
+//     // eg :  "data:audio/mid;base64,"
+//     let string = inputString.replace(/^.*?base64,/, "");
+
+//     // atob can work with strings with whitespaces, even inside the encoded part,
+//     // but only \t, \n, \f, \r and ' ', which can be stripped.
+//     string = String(string).replace(/[\t\n\f\r ]+/g, "");
+
+//     if (!b64re.test(string))
+//         throw new TypeError(
+//             "Failed to execute _atob() : The string to be decoded is not correctly encoded."
+//         );
+
+//     // Adding the padding if missing, for simplicity
+//     string += "==".slice(2 - (string.length & 3));
+
+//     let bitmap,
+//         result = "";
+//     let r1, r2;
+
+//     for (let i = 0; i < string.length; ) {
+//         bitmap =
+//             (b64.indexOf(string.charAt(i++)) << 18) |
+//             (b64.indexOf(string.charAt(i++)) << 12) |
+//             ((r1 = b64.indexOf(string.charAt(i++))) << 6) |
+//             (r2 = b64.indexOf(string.charAt(i++)));
+
+//         result +=
+//             r1 === 64
+//                 ? String.fromCharCode((bitmap >> 16) & 255)
+//                 : r2 === 64
+//                 ? String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255)
+//                 : String.fromCharCode(
+//                       (bitmap >> 16) & 255,
+//                       (bitmap >> 8) & 255,
+//                       bitmap & 255
+//                   );
+//     }
+
+//     return result;
+// };

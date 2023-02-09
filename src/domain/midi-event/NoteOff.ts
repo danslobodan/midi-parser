@@ -11,6 +11,7 @@
 // "VVV VVVV" is the release velocity value (from 0 to 127) - usually 0
 
 class NoteOff {
+    public name = "Note Off";
     public channel: Channel;
     public pitch: Pitch;
     public velocity: Velocity;
