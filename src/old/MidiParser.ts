@@ -1,4 +1,4 @@
-import { IFileBuffer, FileBuffer } from "../DataBuffer";
+import { DataBuffer, IDataBuffer } from "../DataBuffer";
 
 export const parse = (input: Uint8Array | string) => {
     if (input instanceof Uint8Array) return Uint8ToMidi(input);
@@ -38,7 +38,7 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
         FileAsUint8Array.byteOffset,
         FileAsUint8Array.byteLength
     ); // 8 bits bytes file data array
-    const buffer: IFileBuffer = new FileBuffer(data);
+    const buffer: IDataBuffer = new DataBuffer(data);
 
     //  ** read FILE HEADER
     if (buffer.readInt(4) !== 0x4d546864) {
@@ -121,7 +121,7 @@ const Uint8ToMidi = (FileAsUint8Array: Uint8Array) => {
     return MIDI;
 };
 
-const getTimeDivision = (file: IFileBuffer) => {
+const getTimeDivision = (file: IDataBuffer) => {
     let timeDivisionByte1 = file.readInt(1); // get Time Division first byte
     let timeDivisionByte2 = file.readInt(1); // get Time Division second byte
 
@@ -150,7 +150,7 @@ const SET_TEMPO = 0x51;
 const SMPTE_OFFSET = 0x54;
 const TIME_SIGNATURE = 0x58;
 
-const getMetaEvent = (file: IFileBuffer, deltaTime: number): MetaEvent => {
+const getMetaEvent = (file: IDataBuffer, deltaTime: number): MetaEvent => {
     const metaEvent: MetaEvent = {
         data: [],
         deltaTime,
@@ -215,7 +215,7 @@ const SYSTEM_EXCLUSIVE_EVENT = 0xf;
 const END_OF_FILE = -1;
 
 const getRegularEvent = (
-    file: IFileBuffer,
+    file: IDataBuffer,
     deltaTime: number,
     statusByte: number
 ): RegularEvent => {

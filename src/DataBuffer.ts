@@ -1,11 +1,11 @@
-interface IFileBuffer {
+interface IDataBuffer {
     movePointer: (_bytes: number) => number;
     readInt: (_bytes: number) => number;
     readStr: (_bytes: number) => string;
     readIntVariableLengthValue: () => number;
 }
 
-class FileBuffer implements IFileBuffer {
+class DataBuffer implements IDataBuffer {
     private data: DataView;
     private pointer: number = 0;
 
@@ -71,5 +71,5 @@ class FileBuffer implements IFileBuffer {
     }
 }
 
-export { FileBuffer };
-export type { IFileBuffer };
+export { DataBuffer };
+export type { IDataBuffer };
