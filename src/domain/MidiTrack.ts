@@ -2,11 +2,13 @@ import { IDataStream } from "../DataStream";
 import { getMidiEvent, MetaEvent, MidiEvent } from "./MidiEvent";
 import { EventType } from "./EventType";
 import { MetaEventType } from "./MetaEventType";
+import { numberTo8bitArray, numberTo8bitArrayFixedSize } from "../toEightBit";
 
 interface MidiTrack {
     header: string;
     lengthBytes: number;
     events: MidiEvent[];
+    encode: () => number[];
 }
 
 export const getTrack = (
@@ -20,6 +22,19 @@ export const getTrack = (
         header: header.toString(16),
         lengthBytes,
         events,
+        encode: () => {
+            let encodedTrack: number[] = [
+                ...numberTo8bitArray(header),
+                ...numberTo8bitArrayFixedSize(lengthBytes, 4),
+            ];
+
+            for (let i = 0; i < events.length; i++) {
+                const encodedEvent = events[i].encode();
+                encodedTrack = [...encodedTrack, ...encodedEvent];
+            }
+
+            return encodedTrack;
+        },
     };
 };
 

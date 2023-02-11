@@ -1,9 +1,11 @@
 import { DataStream, IDataStream } from "../DataStream";
+import { numberTo8bitArray, numberTo8bitArrayFixedSize } from "../toEightBit";
 import { getTrack, MidiTrack } from "./MidiTrack";
 
 interface MidiFile {
     header: MidiHeader;
     tracks: MidiTrack[];
+    encode: () => number[];
 }
 
 enum MidiFileFormat {
@@ -32,6 +34,7 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
     const fileFormat: MidiFileFormat = dataStream.readInt(2);
     const numberOfTracks = dataStream.readInt(2);
     const timeDivision = dataStream.readInt(2);
+    const tracks = getTracks(dataStream, numberOfTracks);
 
     const midiFile = {
         header: {
@@ -41,7 +44,22 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
             numberOfTracks,
             timeDivision,
         },
-        tracks: getTracks(dataStream, numberOfTracks),
+        tracks,
+        encode: (): number[] => {
+            let encoded: number[] = [];
+            for (let i = 0; i < tracks.length; i++) {
+                encoded = [...encoded, ...tracks[i].encode()];
+            }
+
+            return [
+                ...numberTo8bitArray(midiIdentifier),
+                ...numberTo8bitArrayFixedSize(headerSize, 4),
+                ...numberTo8bitArrayFixedSize(fileFormat, 2),
+                ...numberTo8bitArrayFixedSize(numberOfTracks, 2),
+                ...numberTo8bitArray(timeDivision),
+                ...encoded,
+            ];
+        },
     };
 
     return midiFile;

@@ -8,7 +8,6 @@ class EndOfTrack implements MetaEvent {
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
     public metaType: MetaEventType = MetaEventType.END_OF_TRACK;
-    public data: number[] = [];
 
     constructor(deltaTime: number) {
         this.deltaTime = deltaTime;

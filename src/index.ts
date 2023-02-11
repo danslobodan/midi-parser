@@ -15,6 +15,12 @@ const start = () => {
     const midiFile = decodeMidi(dataStream);
 
     fs.writeFileSync("result.json", JSON.stringify(midiFile, null, 2));
+
+    const encoded = midiFile.encode();
+    const uint = new Uint8Array(encoded);
+
+    console.log("before", new Uint8Array(data));
+    console.log("after", uint);
 };
 
 start();

@@ -13,12 +13,11 @@ interface MidiEvent {
     name: string;
     deltaTime: number;
     type: EventType;
-    data: number[] | number | string;
+    encode: () => number[];
 }
 
 interface MetaEvent extends MidiEvent {
     metaType: MetaEventType;
-    encode: () => number[];
 }
 
 interface RegularEvent extends MidiEvent {
@@ -50,13 +49,13 @@ const getRegularEvent = (
         type,
         channel,
         deltaTime,
-        data: [],
+        encode: () => [],
     };
 
     switch (regularEvent.type) {
         case EventType.SYSTEM_EXCLUSIVE_EVENT: {
-            const eventLength = dataStream.readIntVariableLengthValue();
-            regularEvent.data = dataStream.readInt(eventLength);
+            // const eventLength = dataStream.readIntVariableLengthValue();
+            // regularEvent.data = dataStream.readInt(eventLength);
             break;
         }
         case EventType.NOTE_AFTERTOUCH:
@@ -79,7 +78,7 @@ const getRegularEvent = (
             );
         case EventType.PROGRAM_CHANGE:
         case EventType.CHANNEL_AFTERTOUCH:
-            regularEvent.data = dataStream.readInt(1);
+            // regularEvent.data = dataStream.readInt(1);
             break;
         case EventType.END_OF_FILE:
             break;
@@ -108,7 +107,6 @@ const getMetaEvent = (
                 type: EventType.META_EVENT_TYPE,
                 metaType,
                 deltaTime,
-                data: [],
                 encode: () => {
                     return [-1];
                 },

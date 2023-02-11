@@ -1,5 +1,9 @@
 const numberTo8bitArray = (num: number): number[] => {
     const size = Math.ceil(num.toString(2).length / 8);
+    return numberTo8bitArrayFixedSize(num, size);
+};
+
+const numberTo8bitArrayFixedSize = (num: number, size: number): number[] => {
     let shifter = num;
     const arr: number[] = [];
     for (let i = 0; i < size; i++) {
@@ -21,4 +25,4 @@ const stringTo8BitArray = (str: string): number[] => {
     return arr;
 };
 
-export { numberTo8bitArray, stringTo8BitArray };
+export { numberTo8bitArray, numberTo8bitArrayFixedSize, stringTo8BitArray };
