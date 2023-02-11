@@ -14,12 +14,13 @@ import { EventType } from "../EventType";
 import { RegularEvent } from "../MidiEvent";
 import { Pitch } from "./midi-component/Pitch";
 import { Velocity } from "./midi-component/Velocity";
+import { numberTo8bitArray } from "../../toEightBit";
 
 class NoteOff implements RegularEvent {
     public name = "Note Off";
+    public deltaTime: number;
     public type = EventType.NOTE_OFF;
     public channel: number;
-    public deltaTime: number;
     public data: number[];
 
     public pitch: Pitch;
@@ -36,6 +37,16 @@ class NoteOff implements RegularEvent {
         this.data = [dataByte1, dataByte2];
         this.pitch = new Pitch(dataByte1);
         this.velocity = new Velocity(dataByte2);
+    }
+
+    public encode(): number[] {
+        const arr = [
+            ...numberTo8bitArray(this.deltaTime),
+            ...numberTo8bitArray((this.type << 4) + this.channel),
+            ...numberTo8bitArray(this.data[0]),
+            ...numberTo8bitArray(this.data[1]),
+        ];
+        return arr;
     }
 }
 

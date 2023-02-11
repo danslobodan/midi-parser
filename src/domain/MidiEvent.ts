@@ -1,18 +1,24 @@
 import { IDataStream } from "../DataStream";
 import { EventType } from "./EventType";
 import { MetaEventType } from "./MetaEventType";
+import { EndOfTrack } from "./meta-events/EndOfTrack";
+import { IntMetaEvent } from "./meta-events/IntMetaEvent";
 import { NoteOff } from "./midi-event/NoteOff";
 import { NoteOn } from "./midi-event/NoteOn";
+import { SMPTEOffset } from "./meta-events/SMPTEOffset";
+import { StringMetaEvent } from "./meta-events/StringMetaEvent";
+import { TimeSignature } from "./meta-events/TimeSignature";
 
 interface MidiEvent {
     name: string;
-    data: number[] | number | string;
     deltaTime: number;
     type: EventType;
+    data: number[] | number | string;
 }
 
 interface MetaEvent extends MidiEvent {
     metaType: MetaEventType;
+    encode: () => number[];
 }
 
 interface RegularEvent extends MidiEvent {
@@ -37,15 +43,14 @@ const getRegularEvent = (
 ): RegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
     const channel = statusByte & 0b00001111;
-
     const name = EventType[type] || "Unknown";
 
     const regularEvent: RegularEvent = {
         name,
         type,
         channel,
-        data: [],
         deltaTime,
+        data: [],
     };
 
     switch (regularEvent.type) {
@@ -92,20 +97,22 @@ const getMetaEvent = (
     const metaType = dataStream.readInt(1);
     const name = MetaEventType[metaType] || "Unkown Sytem Message";
 
-    const metaEvent: MetaEvent = {
-        name,
-        type: EventType.META_EVENT_TYPE,
-        metaType,
-        data: [],
-        deltaTime,
-    };
-
     const metaEventLength = dataStream.readIntVariableLengthValue();
 
-    switch (metaEvent.metaType) {
+    switch (metaType) {
         case MetaEventType.END_OF_TRACK:
+            return new EndOfTrack(deltaTime);
         case MetaEventType.END_OF_FILE:
-            break;
+            return {
+                name: "End Of File",
+                type: EventType.META_EVENT_TYPE,
+                metaType,
+                deltaTime,
+                data: [],
+                encode: () => {
+                    return [-1];
+                },
+            };
         case MetaEventType.TEXT_EVENT:
         case MetaEventType.COPYRIGHT_NOTICE:
         case MetaEventType.TRACK_NAME:
@@ -113,14 +120,20 @@ const getMetaEvent = (
         case MetaEventType.LYRICS:
         case MetaEventType.MARKER:
         case MetaEventType.CUE_POINT:
-            metaEvent.data = dataStream.readStr(metaEventLength);
-            break;
+            return new StringMetaEvent(
+                metaType,
+                dataStream.readStr(metaEventLength),
+                deltaTime
+            );
         case MetaEventType.MIDI_CHANNEL_PREFIX:
         case MetaEventType.MIDI_PORT:
         case MetaEventType.KEY_SIGNATURE:
         case MetaEventType.SET_TEMPO:
-            metaEvent.data = dataStream.readInt(metaEventLength);
-            break;
+            return new IntMetaEvent(
+                metaType,
+                dataStream.readInt(metaEventLength),
+                deltaTime
+            );
         case MetaEventType.SMPTE_OFFSET:
             const offset: number[] = [];
             offset[0] = dataStream.readInt(1);
@@ -128,24 +141,21 @@ const getMetaEvent = (
             offset[2] = dataStream.readInt(1);
             offset[3] = dataStream.readInt(1);
             offset[4] = dataStream.readInt(1);
-
-            metaEvent.data = offset;
-            break;
+            return new SMPTEOffset(offset, deltaTime);
         case MetaEventType.TIME_SIGNATURE:
             const timeSignature: number[] = [];
             timeSignature[0] = dataStream.readInt(1);
             timeSignature[1] = dataStream.readInt(1);
             timeSignature[2] = dataStream.readInt(1);
             timeSignature[3] = dataStream.readInt(1);
-
-            metaEvent.data = timeSignature;
-            break;
+            return new TimeSignature(timeSignature, deltaTime);
         default:
-            dataStream.readInt(metaEventLength);
-            metaEvent.data = dataStream.readInt(metaEventLength);
+            return new IntMetaEvent(
+                metaType,
+                dataStream.readInt(metaEventLength),
+                deltaTime
+            );
     }
-
-    return metaEvent;
 };
 
 export type { MidiEvent, MetaEvent, RegularEvent };

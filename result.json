@@ -12,45 +12,45 @@
       "lengthBytes": 41,
       "events": [
         {
+          "type": 255,
           "name": "TRACK_NAME",
-          "type": 255,
           "metaType": 3,
-          "data": "Midi_34_1",
-          "deltaTime": 0
+          "deltaTime": 0,
+          "data": "Midi_34_1"
         },
         {
-          "name": "SET_TEMPO",
           "type": 255,
+          "name": "SET_TEMPO",
           "metaType": 81,
-          "data": 500000,
-          "deltaTime": 0
+          "deltaTime": 0,
+          "data": 500000
         },
         {
-          "name": "TIME_SIGNATURE",
+          "name": "Time Signature",
           "type": 255,
           "metaType": 88,
+          "deltaTime": 0,
           "data": [
             3,
             2,
             24,
             8
-          ],
-          "deltaTime": 0
+          ]
         },
         {
-          "name": "TIME_SIGNATURE",
+          "name": "Time Signature",
           "type": 255,
           "metaType": 88,
+          "deltaTime": 1440,
           "data": [
             5,
             2,
             24,
             8
-          ],
-          "deltaTime": 1440
+          ]
         },
         {
-          "name": "END_OF_TRACK",
+          "name": "End Of Track",
           "type": 255,
           "metaType": 47,
           "data": [],
@@ -63,11 +63,11 @@
       "lengthBytes": 68,
       "events": [
         {
-          "name": "TRACK_NAME",
           "type": 255,
+          "name": "TRACK_NAME",
           "metaType": 3,
-          "data": "Piano",
-          "deltaTime": 0
+          "deltaTime": 0,
+          "data": "Piano"
         },
         {
           "name": "Note On",
@@ -325,7 +325,7 @@
           }
         },
         {
-          "name": "END_OF_TRACK",
+          "name": "End Of Track",
           "type": 255,
           "metaType": 47,
           "data": [],
@@ -338,11 +338,11 @@
       "lengthBytes": 25,
       "events": [
         {
-          "name": "TRACK_NAME",
           "type": 255,
+          "name": "TRACK_NAME",
           "metaType": 3,
-          "data": "Bass",
-          "deltaTime": 0
+          "deltaTime": 0,
+          "data": "Bass"
         },
         {
           "name": "Note On",
@@ -396,7 +396,7 @@
           }
         },
         {
-          "name": "END_OF_TRACK",
+          "name": "End Of Track",
           "type": 255,
           "metaType": 47,
           "data": [],
@@ -409,11 +409,11 @@
       "lengthBytes": 96,
       "events": [
         {
-          "name": "TRACK_NAME",
           "type": 255,
+          "name": "TRACK_NAME",
           "metaType": 3,
-          "data": "Drums",
-          "deltaTime": 0
+          "deltaTime": 0,
+          "data": "Drums"
         },
         {
           "name": "Note Off",
@@ -773,7 +773,7 @@
           }
         },
         {
-          "name": "END_OF_TRACK",
+          "name": "End Of Track",
           "type": 255,
           "metaType": 47,
           "data": [],
