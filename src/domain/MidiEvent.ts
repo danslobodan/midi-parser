@@ -1,6 +1,8 @@
 import { IDataStream } from "../DataStream";
 import { EventType } from "./EventType";
 import { MetaEventType } from "./MetaEventType";
+import { NoteOff } from "./midi-event/NoteOff";
+import { NoteOn } from "./midi-event/NoteOn";
 
 interface MidiEvent {
     name: string;
@@ -41,6 +43,10 @@ const getRegularEvent = (
     const type = parseInt(hexByte[0], 16);
     const channel = parseInt(hexByte[1], 16);
 
+    console.log(statusByte);
+    console.log(type, channel);
+    console.log((statusByte & 11110000) << 4, statusByte & 11110000);
+
     const name = EventType[type] || "Unknown";
 
     const regularEvent: RegularEvent = {
@@ -60,13 +66,21 @@ const getRegularEvent = (
         case EventType.NOTE_AFTERTOUCH:
         case EventType.CONTROLLER:
         case EventType.PITCH_BEND_EVENT:
-        case EventType.NOTE_OFF:
-        case EventType.NOTE_ON:
-            const note: number[] = [];
-            note[0] = dataStream.readInt(1);
-            note[1] = dataStream.readInt(1);
-            regularEvent.data = note;
             break;
+        case EventType.NOTE_OFF:
+            return new NoteOff(
+                statusByte,
+                dataStream.readInt(1),
+                dataStream.readInt(1),
+                deltaTime
+            );
+        case EventType.NOTE_ON:
+            return new NoteOn(
+                statusByte,
+                dataStream.readInt(1),
+                dataStream.readInt(1),
+                deltaTime
+            );
         case EventType.PROGRAM_CHANGE:
         case EventType.CHANNEL_AFTERTOUCH:
             regularEvent.data = dataStream.readInt(1);
@@ -85,7 +99,7 @@ const getMetaEvent = (
     deltaTime: number
 ): MetaEvent => {
     const metaType = dataStream.readInt(1);
-    const name = MetaEventType[metaType];
+    const name = MetaEventType[metaType] || "Unkown Sytem Message";
 
     const metaEvent: MetaEvent = {
         name,

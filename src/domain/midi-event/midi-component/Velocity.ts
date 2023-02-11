@@ -12,3 +12,5 @@ class Velocity {
         return this.value;
     }
 }
+
+export { Velocity };
