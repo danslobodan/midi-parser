@@ -35,13 +35,8 @@ const getRegularEvent = (
     deltaTime: number,
     statusByte: number
 ): RegularEvent => {
-    // split the status byte HEX representation, to obtain 4 bits values
-    const hexByte = statusByte.toString(16).split("");
-    // force 2 digits
-    if (!hexByte[1]) hexByte.unshift("0");
-
-    const type = parseInt(hexByte[0], 16);
-    const channel = parseInt(hexByte[1], 16);
+    const type = (statusByte & 0b11110000) >> 4;
+    const channel = statusByte & 0b00001111;
 
     console.log(statusByte);
     console.log(type, channel);
