@@ -38,10 +38,6 @@ const getRegularEvent = (
     const type = (statusByte & 0b11110000) >> 4;
     const channel = statusByte & 0b00001111;
 
-    console.log(statusByte);
-    console.log(type, channel);
-    console.log((statusByte & 11110000) << 4, statusByte & 11110000);
-
     const name = EventType[type] || "Unknown";
 
     const regularEvent: RegularEvent = {
