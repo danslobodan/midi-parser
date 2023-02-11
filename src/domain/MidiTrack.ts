@@ -1,6 +1,7 @@
 import { IDataStream } from "../DataStream";
-import { getMidiEvent, MetaEvent, MidiEvent } from "./midi-event/MidiEvent";
-import { EventType, MetaEventType } from "./midi-event/constants";
+import { getMidiEvent, MetaEvent, MidiEvent } from "./MidiEvent";
+import { EventType } from "./EventType";
+import { MetaEventType } from "./MetaEventType";
 
 interface MidiTrack {
     header: string;

@@ -15,14 +15,7 @@ const start = () => {
     const dataStream = new DataStream(dataView);
     const midiFile = decodeMidi(dataStream);
 
-    console.log(
-        midiFile.tracks[0].lengthBytes,
-        midiFile.tracks[0].events.length
-    );
-
     const old = Uint8ToMidi(dataView);
-
-    if (old) console.log(old.track[0].lengthBytes, old.track[0].events.length);
 
     fs.writeFileSync("result.json", JSON.stringify(midiFile, null, 2));
     fs.writeFileSync("old.json", JSON.stringify(old, null, 2));

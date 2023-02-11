@@ -1,5 +1,6 @@
-import { IDataStream } from "../../DataStream";
-import { EventType, MetaEventType } from "./constants";
+import { IDataStream } from "../DataStream";
+import { EventType } from "./EventType";
+import { MetaEventType } from "./MetaEventType";
 
 interface MidiEvent {
     name: string;
@@ -40,8 +41,10 @@ const getRegularEvent = (
     const type = parseInt(hexByte[0], 16);
     const channel = parseInt(hexByte[1], 16);
 
+    const name = EventType[type] || "Unknown";
+
     const regularEvent: RegularEvent = {
-        name: getName(type),
+        name,
         type,
         channel,
         data: [],
@@ -77,33 +80,15 @@ const getRegularEvent = (
     return regularEvent;
 };
 
-const getName = (type: number) => {
-    switch (type) {
-        case EventType.NOTE_ON:
-            return "Note On";
-        case EventType.NOTE_OFF:
-            return "Note Off";
-        case EventType.NOTE_AFTERTOUCH:
-            return "Note Aftertouch";
-        case EventType.CONTROLLER:
-            return "Controller";
-        case EventType.PROGRAM_CHANGE:
-            return "Program Change";
-        case EventType.CHANNEL_AFTERTOUCH:
-            return "Channel Aftertouch";
-        default:
-            return "Unknown";
-    }
-};
-
 const getMetaEvent = (
     dataStream: IDataStream,
     deltaTime: number
 ): MetaEvent => {
     const metaType = dataStream.readInt(1);
+    const name = MetaEventType[metaType];
 
     const metaEvent: MetaEvent = {
-        name: getMetaName(metaType),
+        name,
         type: EventType.META_EVENT_TYPE,
         metaType,
         data: [],
@@ -156,43 +141,6 @@ const getMetaEvent = (
     }
 
     return metaEvent;
-};
-
-const getMetaName = (metaType: number): string => {
-    switch (metaType) {
-        case MetaEventType.END_OF_TRACK:
-            return "End Of Track";
-        case MetaEventType.END_OF_FILE:
-            return "End Of File";
-        case MetaEventType.TEXT_EVENT:
-            return "Text";
-        case MetaEventType.COPYRIGHT_NOTICE:
-            return "Copyright";
-        case MetaEventType.TRACK_NAME:
-            return "Track Name";
-        case MetaEventType.INSTRUMENT_NAME:
-            return "Instrument Name";
-        case MetaEventType.LYRICS:
-            return "Lyrics";
-        case MetaEventType.MARKER:
-            return "Marker";
-        case MetaEventType.CUE_POINT:
-            return "Cue Point";
-        case MetaEventType.MIDI_CHANNEL_PREFIX:
-            return "Midi Channel Prefix";
-        case MetaEventType.MIDI_PORT:
-            return "Midi Port";
-        case MetaEventType.KEY_SIGNATURE:
-            return "Key Signature";
-        case MetaEventType.SET_TEMPO:
-            return "Set tempo";
-        case MetaEventType.SMPTE_OFFSET:
-            return "Smpte Offset";
-        case MetaEventType.TIME_SIGNATURE:
-            return "Time Signature";
-        default:
-            return "Unknown";
-    }
 };
 
 export type { MidiEvent, MetaEvent, RegularEvent };
