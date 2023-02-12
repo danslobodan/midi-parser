@@ -1,7 +1,7 @@
 let logs = true;
 
 const numberTo8bitArray = (num: number): number[] => {
-    const log = logs && num > 0;
+    const log = logs && num > 128;
 
     if (log) console.log("num", num);
     const binaryString7bit = num.toString(2);

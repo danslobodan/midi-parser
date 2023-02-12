@@ -68,7 +68,6 @@ class DataStream implements IDataStream {
             value += bytes[i] << (i * 7);
         }
 
-        console.log("value", value);
         return value;
     }
 }
