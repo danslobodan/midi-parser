@@ -62,11 +62,10 @@ class DataStream implements IDataStream {
             if (!(valueByte & CONTINUATION_BIT)) break;
         }
 
-        const bytesReversed = bytes.reverse();
-
+        bytes.reverse();
         let value = 0;
-        for (let i = 0; i < bytesReversed.length; i++) {
-            value += bytesReversed[i] << (7 * i);
+        for (let i = 0; i < bytes.length; i++) {
+            value += bytes[i] << (i * 7);
         }
 
         console.log("value", value);
