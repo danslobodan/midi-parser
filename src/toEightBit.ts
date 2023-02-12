@@ -1,34 +1,29 @@
-let logs = true;
-
 const numberTo8bitArray = (num: number): number[] => {
-    const log = logs && num > 128;
-
-    if (log) console.log("num", num);
     const binaryString7bit = num.toString(2);
 
-    if (log) console.log(binaryString7bit);
     const bytes = Math.ceil(binaryString7bit.length / 7);
 
-    if (log) console.log(bytes);
-
-    if (log) logs = false;
-
     let binaryString8bit = "";
-    for (let i = bytes; i >= 0; i--) {
-        const start =
-            binaryString7bit.length - 7 > 0
-                ? binaryString7bit.length - 7
-                : binaryString7bit.length;
+    for (let i = bytes - 1; i >= 0; i--) {
+        const start = i === 0 ? 0 : binaryString7bit.length - (bytes - i) * 7;
 
-        const byte7bit = binaryString7bit.substring(start);
+        const end =
+            i === 0
+                ? binaryString7bit.length % 7
+                : binaryString7bit.length - (bytes - 1 - i);
+
+        const byte7bit = binaryString7bit.substring(start, end);
+
         const byte8bit =
-            i === bytes
+            i === bytes - 1
                 ? byte7bit.padStart(8, "0")
                 : byte7bit.padStart(7, "0").padStart(8, "1");
-        binaryString8bit += byte8bit;
+
+        binaryString8bit = `${byte8bit}${binaryString8bit}`;
     }
 
     const num8bit = parseInt(binaryString8bit, 2);
+
     return numberTo8bitArrayFixedSize(num8bit, bytes);
 };
 

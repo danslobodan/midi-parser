@@ -1,5 +1,5 @@
 import { DataStream, IDataStream } from "../DataStream";
-import { numberTo8bitArray, numberTo8bitArrayFixedSize } from "../toEightBit";
+import { numberTo8bitArrayFixedSize } from "../toEightBit";
 import { getTrack, MidiTrack } from "./MidiTrack";
 
 interface MidiFile {
@@ -51,11 +51,11 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
             }
 
             return [
-                ...numberTo8bitArray(midiIdentifier),
+                ...numberTo8bitArrayFixedSize(midiIdentifier, 4),
                 ...numberTo8bitArrayFixedSize(headerSize, 4),
                 ...numberTo8bitArrayFixedSize(fileFormat, 2),
                 ...numberTo8bitArrayFixedSize(numberOfTracks, 2),
-                ...numberTo8bitArray(timeDivision),
+                ...numberTo8bitArrayFixedSize(timeDivision, 2),
                 ...encoded,
             ];
         },

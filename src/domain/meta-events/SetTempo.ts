@@ -26,7 +26,7 @@ class SetTempo implements MetaEvent {
             ...numberTo8bitArrayFixedSize(this.type, 1),
             ...numberTo8bitArrayFixedSize(this.metaType, 1),
             ...numberTo8bitArray(this.length),
-            ...numberTo8bitArrayFixedSize(this.data, 1),
+            ...numberTo8bitArrayFixedSize(this.data, this.length),
         ];
         return arr;
     }
