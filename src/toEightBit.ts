@@ -5,12 +5,18 @@ const numberTo8bitArray = (num: number): number[] => {
 
     let binaryString8bit = "";
     for (let i = bytes - 1; i >= 0; i--) {
-        const start = i === 0 ? 0 : binaryString7bit.length - (bytes - i) * 7;
+        let start = 0;
+        let end = 0;
 
-        const end =
-            i === 0
-                ? binaryString7bit.length % 7
-                : binaryString7bit.length - (bytes - 1 - i);
+        if (i === 0) {
+            end =
+                binaryString7bit.length % 7 === 0
+                    ? 7
+                    : binaryString7bit.length % 7;
+        } else {
+            start = binaryString7bit.length - (bytes - i) * 7;
+            end = binaryString7bit.length - (bytes - 1 - i);
+        }
 
         const byte7bit = binaryString7bit.substring(start, end);
 
