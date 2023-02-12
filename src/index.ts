@@ -22,7 +22,10 @@ const start = () => {
     console.log("before", new Uint8Array(data));
     console.log("after", uint);
 
-    fs.writeFileSync("uint.json", JSON.stringify(data, null, 2));
+    fs.writeFileSync(
+        "uint.json",
+        JSON.stringify(new Uint8Array(data), null, 2)
+    );
 };
 
 start();
