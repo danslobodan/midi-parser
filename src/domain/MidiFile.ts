@@ -15,7 +15,6 @@ enum MidiFileFormat {
 }
 
 interface MidiHeader {
-    // must be 0x4d546864
     midiIdentifier: string;
     headerSize: number;
     fileFormat: MidiFileFormat;
@@ -75,16 +74,12 @@ const getTracks = (
     const tracks: MidiTrack[] = [];
 
     for (let i = 1; i <= numberOfTracks; i++) {
-        // create new Track entry in Array
-        let trackHeader = dataStream.readInt(4);
+        const trackHeader = dataStream.readInt(4);
 
-        // EOF
         if (trackHeader === END_OF_FILE) break;
-        // Track chunk header validation failed.
         if (trackHeader !== TRACK_HEADER_SIGNATURE) return tracks;
 
-        // move pointer. get chunk size (bytes length)
-        const track = getTrack(trackHeader, dataStream);
+        const track = getTrack(dataStream);
         tracks.push(track);
     }
 

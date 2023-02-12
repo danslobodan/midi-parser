@@ -8,12 +8,19 @@ class IntMetaEvent implements MetaEvent {
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
     public metaType: MetaEventType;
+    public length: number;
     public data: number;
 
-    constructor(metaType: MetaEventType, data: number, deltaTime: number) {
+    constructor(
+        deltaTime: number,
+        length: number,
+        metaType: MetaEventType,
+        data: number
+    ) {
+        this.deltaTime = deltaTime;
         this.name = MetaEventType[metaType] || "Unkown Sytem Message";
         this.metaType = metaType;
-        this.deltaTime = deltaTime;
+        this.length = length;
         this.data = data;
     }
 

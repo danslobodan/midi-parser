@@ -8,11 +8,18 @@ class StringMetaEvent implements MetaEvent {
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
     public metaType: MetaEventType;
+    public length: number;
     public data: string;
 
-    constructor(metaType: number, data: string, deltaTime: number) {
+    constructor(
+        deltaTime: number,
+        metaType: number,
+        length: number,
+        data: string
+    ) {
         this.name = MetaEventType[metaType] || "Unkown Sytem Message";
         this.metaType = metaType;
+        this.length = length;
         this.deltaTime = deltaTime;
         this.data = data;
     }
@@ -22,6 +29,7 @@ class StringMetaEvent implements MetaEvent {
             ...numberTo8bitArray(this.deltaTime),
             ...numberTo8bitArray(this.type),
             ...numberTo8bitArray(this.metaType),
+            ...numberTo8bitArray(this.length),
             ...stringTo8BitArray(this.data),
         ];
         return arr;

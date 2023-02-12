@@ -3,15 +3,15 @@ import { EventType } from "../EventType";
 import { MetaEventType } from "../MetaEventType";
 import { MetaEvent } from "../MidiEvent";
 
-class TimeSignature implements MetaEvent {
-    public name = "Time Signature";
+class SetTempo implements MetaEvent {
+    public name: string = "Set Tempo";
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
-    public metaType = MetaEventType.TIME_SIGNATURE;
+    public metaType = MetaEventType.SET_TEMPO;
     public length: number;
-    public data: number[];
+    public data: number;
 
-    constructor(deltaTime: number, length: number, data: number[]) {
+    constructor(deltaTime: number, length: number, data: number) {
         this.deltaTime = deltaTime;
         this.length = length;
         this.data = data;
@@ -23,13 +23,10 @@ class TimeSignature implements MetaEvent {
             ...numberTo8bitArray(this.type),
             ...numberTo8bitArray(this.metaType),
             ...numberTo8bitArray(this.length),
-            ...numberTo8bitArray(this.data[0]),
-            ...numberTo8bitArray(this.data[1]),
-            ...numberTo8bitArray(this.data[2]),
-            ...numberTo8bitArray(this.data[3]),
+            ...numberTo8bitArray(this.data),
         ];
         return arr;
     }
 }
 
-export { TimeSignature };
+export { SetTempo };

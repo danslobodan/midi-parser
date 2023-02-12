@@ -11,20 +11,19 @@ interface MidiTrack {
     encode: () => number[];
 }
 
-export const getTrack = (
-    header: number,
-    dataStream: IDataStream
-): MidiTrack => {
+const TRACK_HEADER_SIGNATURE = 0x4d54726b;
+
+export const getTrack = (dataStream: IDataStream): MidiTrack => {
     const lengthBytes = dataStream.readInt(4);
     const events = getEvents(dataStream);
 
     return {
-        header: header.toString(16),
+        header: TRACK_HEADER_SIGNATURE.toString(16),
         lengthBytes,
         events,
         encode: () => {
             let encodedTrack: number[] = [
-                ...numberTo8bitArray(header),
+                ...numberTo8bitArrayFixedSize(TRACK_HEADER_SIGNATURE, 4),
                 ...numberTo8bitArrayFixedSize(lengthBytes, 4),
             ];
 

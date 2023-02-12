@@ -8,10 +8,12 @@ class SMPTEOffset implements MetaEvent {
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
     public metaType = MetaEventType.SMPTE_OFFSET;
+    public length: number;
     public data: number[];
 
-    constructor(data: number[], deltaTime: number) {
+    constructor(deltaTime: number, length: number, data: number[]) {
         this.deltaTime = deltaTime;
+        this.length = length;
         this.data = data;
     }
 
@@ -20,6 +22,7 @@ class SMPTEOffset implements MetaEvent {
             ...numberTo8bitArray(this.deltaTime),
             ...numberTo8bitArray(this.type),
             ...numberTo8bitArray(this.metaType),
+            ...numberTo8bitArray(this.length),
             ...numberTo8bitArray(this.data[0]),
             ...numberTo8bitArray(this.data[1]),
             ...numberTo8bitArray(this.data[2]),

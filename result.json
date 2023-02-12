@@ -15,14 +15,16 @@
           "type": 255,
           "name": "TRACK_NAME",
           "metaType": 3,
+          "length": 9,
           "deltaTime": 0,
           "data": "Midi_34_1"
         },
         {
+          "name": "Set Tempo",
           "type": 255,
-          "name": "SET_TEMPO",
           "metaType": 81,
           "deltaTime": 0,
+          "length": 3,
           "data": 500000
         },
         {
@@ -30,6 +32,7 @@
           "type": 255,
           "metaType": 88,
           "deltaTime": 0,
+          "length": 4,
           "data": [
             3,
             2,
@@ -42,6 +45,7 @@
           "type": 255,
           "metaType": 88,
           "deltaTime": 1440,
+          "length": 4,
           "data": [
             5,
             2,
@@ -53,7 +57,8 @@
           "name": "End Of Track",
           "type": 255,
           "metaType": 47,
-          "deltaTime": 0
+          "deltaTime": 0,
+          "length": 0
         }
       ]
     },
@@ -65,6 +70,7 @@
           "type": 255,
           "name": "TRACK_NAME",
           "metaType": 3,
+          "length": 5,
           "deltaTime": 0,
           "data": "Piano"
         },
@@ -327,7 +333,8 @@
           "name": "End Of Track",
           "type": 255,
           "metaType": 47,
-          "deltaTime": 0
+          "deltaTime": 0,
+          "length": 0
         }
       ]
     },
@@ -339,6 +346,7 @@
           "type": 255,
           "name": "TRACK_NAME",
           "metaType": 3,
+          "length": 4,
           "deltaTime": 0,
           "data": "Bass"
         },
@@ -397,7 +405,8 @@
           "name": "End Of Track",
           "type": 255,
           "metaType": 47,
-          "deltaTime": 0
+          "deltaTime": 0,
+          "length": 0
         }
       ]
     },
@@ -409,6 +418,7 @@
           "type": 255,
           "name": "TRACK_NAME",
           "metaType": 3,
+          "length": 5,
           "deltaTime": 0,
           "data": "Drums"
         },
@@ -773,7 +783,8 @@
           "name": "End Of Track",
           "type": 255,
           "metaType": 47,
-          "deltaTime": 0
+          "deltaTime": 0,
+          "length": 0
         }
       ]
     }

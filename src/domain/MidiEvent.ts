@@ -8,6 +8,7 @@ import { NoteOn } from "./midi-event/NoteOn";
 import { SMPTEOffset } from "./meta-events/SMPTEOffset";
 import { StringMetaEvent } from "./meta-events/StringMetaEvent";
 import { TimeSignature } from "./meta-events/TimeSignature";
+import { SetTempo } from "./meta-events/SetTempo";
 
 interface MidiEvent {
     name: string;
@@ -18,6 +19,7 @@ interface MidiEvent {
 
 interface MetaEvent extends MidiEvent {
     metaType: MetaEventType;
+    length: number;
 }
 
 interface RegularEvent extends MidiEvent {
@@ -94,18 +96,17 @@ const getMetaEvent = (
     deltaTime: number
 ): MetaEvent => {
     const metaType = dataStream.readInt(1);
-    const name = MetaEventType[metaType] || "Unkown Sytem Message";
-
-    const metaEventLength = dataStream.readIntVariableLengthValue();
+    const length = dataStream.readIntVariableLengthValue();
 
     switch (metaType) {
         case MetaEventType.END_OF_TRACK:
-            return new EndOfTrack(deltaTime);
+            return new EndOfTrack(deltaTime, length);
         case MetaEventType.END_OF_FILE:
             return {
                 name: "End Of File",
                 type: EventType.META_EVENT_TYPE,
                 metaType,
+                length,
                 deltaTime,
                 encode: () => {
                     return [-1];
@@ -119,19 +120,22 @@ const getMetaEvent = (
         case MetaEventType.MARKER:
         case MetaEventType.CUE_POINT:
             return new StringMetaEvent(
+                deltaTime,
                 metaType,
-                dataStream.readStr(metaEventLength),
-                deltaTime
+                length,
+                dataStream.readStr(length)
             );
         case MetaEventType.MIDI_CHANNEL_PREFIX:
         case MetaEventType.MIDI_PORT:
         case MetaEventType.KEY_SIGNATURE:
-        case MetaEventType.SET_TEMPO:
             return new IntMetaEvent(
+                deltaTime,
                 metaType,
-                dataStream.readInt(metaEventLength),
-                deltaTime
+                length,
+                dataStream.readInt(length)
             );
+        case MetaEventType.SET_TEMPO:
+            return new SetTempo(deltaTime, length, dataStream.readInt(length));
         case MetaEventType.SMPTE_OFFSET:
             const offset: number[] = [];
             offset[0] = dataStream.readInt(1);
@@ -139,18 +143,20 @@ const getMetaEvent = (
             offset[2] = dataStream.readInt(1);
             offset[3] = dataStream.readInt(1);
             offset[4] = dataStream.readInt(1);
-            return new SMPTEOffset(offset, deltaTime);
+            return new SMPTEOffset(deltaTime, length, offset);
         case MetaEventType.TIME_SIGNATURE:
+            console.log(deltaTime);
             const timeSignature: number[] = [];
             timeSignature[0] = dataStream.readInt(1);
             timeSignature[1] = dataStream.readInt(1);
             timeSignature[2] = dataStream.readInt(1);
             timeSignature[3] = dataStream.readInt(1);
-            return new TimeSignature(timeSignature, deltaTime);
+            return new TimeSignature(deltaTime, length, timeSignature);
         default:
             return new IntMetaEvent(
                 metaType,
-                dataStream.readInt(metaEventLength),
+                length,
+                dataStream.readInt(length),
                 deltaTime
             );
     }
