@@ -10,7 +10,10 @@
 // "PPP PPPP" is the pitch value (from 0 to 127) - middle C = 60, C# = 61, D = 62
 // "VVV VVVV" is the velocity value (from 0 to 127)
 
-import { numberTo8bitArray } from "../../toEightBit";
+import {
+    numberTo8bitArray,
+    numberTo8bitArrayFixedSize,
+} from "../../toEightBit";
 import { EventType } from "../EventType";
 import { RegularEvent } from "../MidiEvent";
 import { Pitch } from "./midi-component/Pitch";
@@ -21,8 +24,6 @@ class NoteOn implements RegularEvent {
     public deltaTime: number;
     public type = EventType.NOTE_ON;
     public channel: number;
-    public data: number[];
-
     public pitch: Pitch;
     public velocity: Velocity;
 
@@ -34,7 +35,6 @@ class NoteOn implements RegularEvent {
     ) {
         this.channel = statusByte & 0b00001111;
         this.deltaTime = deltaTime;
-        this.data = [dataByte1, dataByte2];
         this.pitch = new Pitch(dataByte1);
         this.velocity = new Velocity(dataByte2);
     }
@@ -42,9 +42,9 @@ class NoteOn implements RegularEvent {
     public encode(): number[] {
         const arr = [
             ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArray((this.type << 4) + this.channel),
-            ...numberTo8bitArray(this.data[0]),
-            ...numberTo8bitArray(this.data[1]),
+            ...numberTo8bitArrayFixedSize((this.type << 4) + this.channel, 1),
+            ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
+            ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
         ];
         return arr;
     }

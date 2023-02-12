@@ -49,25 +49,30 @@ class DataStream implements IDataStream {
     public readIntVariableLengthValue() {
         if (this.pointer >= this.data.byteLength) {
             return -1; // EOF
-        } else if (this.data.getUint8(this.pointer) < 128) {
-            // ...value in a single byte
-            return this.readInt(1);
-        } else {
-            // ...value in multiple bytes
-
-            let value = 0;
-            let FirstBytes = [];
-            while (this.data.getUint8(this.pointer) >= 128) {
-                FirstBytes.push(this.readInt(1) - 128);
-            }
-
-            const lastByte = this.readInt(1);
-            for (let dt = 1; dt <= FirstBytes.length; dt++) {
-                value += FirstBytes[FirstBytes.length - dt] * Math.pow(128, dt);
-            }
-            value += lastByte;
-            return value;
         }
+
+        const bytes = [];
+
+        const CONTINUATION_BIT = 0b10000000;
+        while (this.data.getUint8(this.pointer) & CONTINUATION_BIT) {
+            const valueByte = this.readInt(1);
+            const value7bit = valueByte & ~CONTINUATION_BIT;
+            bytes.push(value7bit);
+
+            if (!(valueByte & CONTINUATION_BIT)) break;
+        }
+        const lastByte = this.readInt(1);
+        bytes.push(lastByte);
+
+        const bytesReversed = bytes.reverse();
+
+        let value = 0;
+        for (let i = 0; i < bytesReversed.length; i++) {
+            value += bytesReversed[i] << (7 * i);
+        }
+
+        console.log("value", value);
+        return value;
     }
 }
 

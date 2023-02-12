@@ -1,4 +1,7 @@
-import { numberTo8bitArray } from "../../toEightBit";
+import {
+    numberTo8bitArray,
+    numberTo8bitArrayFixedSize,
+} from "../../toEightBit";
 import { EventType } from "../EventType";
 import { MetaEventType } from "../MetaEventType";
 import { MetaEvent } from "../MidiEvent";
@@ -20,14 +23,14 @@ class SMPTEOffset implements MetaEvent {
     public encode(): number[] {
         const arr = [
             ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArray(this.type),
-            ...numberTo8bitArray(this.metaType),
+            ...numberTo8bitArrayFixedSize(this.type, 1),
+            ...numberTo8bitArrayFixedSize(this.metaType, 1),
             ...numberTo8bitArray(this.length),
-            ...numberTo8bitArray(this.data[0]),
-            ...numberTo8bitArray(this.data[1]),
-            ...numberTo8bitArray(this.data[2]),
-            ...numberTo8bitArray(this.data[3]),
-            ...numberTo8bitArray(this.data[4]),
+            ...numberTo8bitArrayFixedSize(this.data[0], 1),
+            ...numberTo8bitArrayFixedSize(this.data[1], 1),
+            ...numberTo8bitArrayFixedSize(this.data[2], 1),
+            ...numberTo8bitArrayFixedSize(this.data[3], 1),
+            ...numberTo8bitArrayFixedSize(this.data[4], 1),
         ];
         return arr;
     }

@@ -145,7 +145,6 @@ const getMetaEvent = (
             offset[4] = dataStream.readInt(1);
             return new SMPTEOffset(deltaTime, length, offset);
         case MetaEventType.TIME_SIGNATURE:
-            console.log(deltaTime);
             const timeSignature: number[] = [];
             timeSignature[0] = dataStream.readInt(1);
             timeSignature[1] = dataStream.readInt(1);

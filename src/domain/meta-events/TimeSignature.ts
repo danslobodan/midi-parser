@@ -1,4 +1,7 @@
-import { numberTo8bitArray } from "../../toEightBit";
+import {
+    numberTo8bitArray,
+    numberTo8bitArrayFixedSize,
+} from "../../toEightBit";
 import { EventType } from "../EventType";
 import { MetaEventType } from "../MetaEventType";
 import { MetaEvent } from "../MidiEvent";
@@ -20,8 +23,8 @@ class TimeSignature implements MetaEvent {
     public encode(): number[] {
         const arr = [
             ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArray(this.type),
-            ...numberTo8bitArray(this.metaType),
+            ...numberTo8bitArrayFixedSize(this.type, 1),
+            ...numberTo8bitArrayFixedSize(this.metaType, 1),
             ...numberTo8bitArray(this.length),
             ...numberTo8bitArray(this.data[0]),
             ...numberTo8bitArray(this.data[1]),

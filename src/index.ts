@@ -19,13 +19,7 @@ const start = () => {
     const encoded = midiFile.encode();
     const uint = new Uint8Array(encoded);
 
-    console.log("before", new Uint8Array(data));
-    console.log("after", uint);
-
-    fs.writeFileSync(
-        "uint.json",
-        JSON.stringify(new Uint8Array(data), null, 2)
-    );
+    fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
 };
 
 start();

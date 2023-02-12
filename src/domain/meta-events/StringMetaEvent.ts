@@ -1,4 +1,8 @@
-import { numberTo8bitArray, stringTo8BitArray } from "../../toEightBit";
+import {
+    numberTo8bitArray,
+    stringTo8BitArray,
+    numberTo8bitArrayFixedSize,
+} from "../../toEightBit";
 import { EventType } from "../EventType";
 import { MetaEventType } from "../MetaEventType";
 import { MetaEvent } from "../MidiEvent";
@@ -27,8 +31,8 @@ class StringMetaEvent implements MetaEvent {
     public encode(): number[] {
         const arr = [
             ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArray(this.type),
-            ...numberTo8bitArray(this.metaType),
+            ...numberTo8bitArrayFixedSize(this.type, 1),
+            ...numberTo8bitArrayFixedSize(this.metaType, 1),
             ...numberTo8bitArray(this.length),
             ...stringTo8BitArray(this.data),
         ];

@@ -79,10 +79,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 480,
-          "data": [
-            55,
-            100
-          ],
           "pitch": {
             "value": 55,
             "note": "G3"
@@ -96,10 +92,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            58,
-            100
-          ],
           "pitch": {
             "value": 58,
             "note": "A#3"
@@ -113,10 +105,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            64,
-            100
-          ],
           "pitch": {
             "value": 64,
             "note": "E4"
@@ -181,10 +169,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 240,
-          "data": [
-            55,
-            100
-          ],
           "pitch": {
             "value": 55,
             "note": "G3"
@@ -198,10 +182,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            58,
-            100
-          ],
           "pitch": {
             "value": 58,
             "note": "A#3"
@@ -215,10 +195,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            64,
-            100
-          ],
           "pitch": {
             "value": 64,
             "note": "E4"
@@ -283,10 +259,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 240,
-          "data": [
-            55,
-            100
-          ],
           "pitch": {
             "value": 55,
             "note": "G3"
@@ -300,10 +272,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            58,
-            100
-          ],
           "pitch": {
             "value": 58,
             "note": "A#3"
@@ -317,10 +285,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            64,
-            100
-          ],
           "pitch": {
             "value": 64,
             "note": "E4"
@@ -355,10 +319,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            48,
-            100
-          ],
           "pitch": {
             "value": 48,
             "note": "C3"
@@ -389,10 +349,6 @@
           "type": 9,
           "channel": 0,
           "deltaTime": 1320,
-          "data": [
-            48,
-            100
-          ],
           "pitch": {
             "value": 48,
             "note": "C3"
@@ -444,10 +400,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            36,
-            100
-          ],
           "pitch": {
             "value": 36,
             "note": "C2"
@@ -461,10 +413,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -512,10 +460,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -546,10 +490,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            38,
-            100
-          ],
           "pitch": {
             "value": 38,
             "note": "D2"
@@ -563,10 +503,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -614,10 +550,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -648,10 +580,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            38,
-            100
-          ],
           "pitch": {
             "value": 38,
             "note": "D2"
@@ -665,10 +593,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -716,10 +640,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
@@ -750,10 +670,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            36,
-            100
-          ],
           "pitch": {
             "value": 36,
             "note": "C2"
@@ -767,10 +683,6 @@
           "type": 9,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            100
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
