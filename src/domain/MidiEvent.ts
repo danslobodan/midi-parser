@@ -29,18 +29,20 @@ interface RegularEvent extends MidiEvent {
 export const getMidiEvent = (
     deltaTime: number,
     statusByte: number,
-    dataStream: IDataStream
+    dataStream: IDataStream,
+    runningStatus: boolean
 ): MidiEvent => {
     if (statusByte === EventType.META_EVENT_TYPE)
         return getMetaEvent(dataStream, deltaTime);
 
-    return getRegularEvent(dataStream, deltaTime, statusByte);
+    return getRegularEvent(dataStream, deltaTime, statusByte, runningStatus);
 };
 
 const getRegularEvent = (
     dataStream: IDataStream,
     deltaTime: number,
-    statusByte: number
+    statusByte: number,
+    runningStatus: boolean
 ): RegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
     const channel = statusByte & 0b00001111;
@@ -66,17 +68,19 @@ const getRegularEvent = (
             break;
         case EventType.NOTE_OFF:
             return new NoteOff(
+                deltaTime,
                 statusByte,
                 dataStream.readInt(1),
                 dataStream.readInt(1),
-                deltaTime
+                runningStatus
             );
         case EventType.NOTE_ON:
             return new NoteOn(
+                deltaTime,
                 statusByte,
                 dataStream.readInt(1),
                 dataStream.readInt(1),
-                deltaTime
+                runningStatus
             );
         case EventType.PROGRAM_CHANGE:
         case EventType.CHANNEL_AFTERTOUCH:

@@ -26,27 +26,37 @@ class NoteOn implements RegularEvent {
     public channel: number;
     public pitch: Pitch;
     public velocity: Velocity;
+    public runningStatus: boolean;
 
     constructor(
+        deltaTime: number,
         statusByte: number,
         dataByte1: number,
         dataByte2: number,
-        deltaTime: number
+        runningStatus: boolean
     ) {
         this.channel = statusByte & 0b00001111;
         this.deltaTime = deltaTime;
         this.pitch = new Pitch(dataByte1);
         this.velocity = new Velocity(dataByte2);
+        this.runningStatus = runningStatus;
     }
 
     public encode(): number[] {
-        const arr = [
+        if (this.runningStatus) {
+            return [
+                ...numberTo8bitArray(this.deltaTime),
+                ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
+                ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
+            ];
+        }
+
+        return [
             ...numberTo8bitArray(this.deltaTime),
             ...numberTo8bitArrayFixedSize((this.type << 4) + this.channel, 1),
             ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
             ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
         ];
-        return arr;
     }
 }
 

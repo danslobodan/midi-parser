@@ -24,32 +24,40 @@ class NoteOff implements RegularEvent {
     public deltaTime: number;
     public type = EventType.NOTE_OFF;
     public channel: number;
-    public data: number[];
 
     public pitch: Pitch;
     public velocity: Velocity;
+    public runningStatus: boolean;
 
     constructor(
+        deltaTime: number,
         statusByte: number,
         dataByte1: number,
         dataByte2: number,
-        deltaTime: number
+        runningStatus: boolean
     ) {
         this.channel = statusByte & 0b00001111;
         this.deltaTime = deltaTime;
-        this.data = [dataByte1, dataByte2];
         this.pitch = new Pitch(dataByte1);
         this.velocity = new Velocity(dataByte2);
+        this.runningStatus = runningStatus;
     }
 
     public encode(): number[] {
-        const arr = [
+        if (this.runningStatus) {
+            return [
+                ...numberTo8bitArray(this.deltaTime),
+                ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
+                ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
+            ];
+        }
+
+        return [
             ...numberTo8bitArray(this.deltaTime),
             ...numberTo8bitArrayFixedSize((this.type << 4) + this.channel, 1),
             ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
             ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
         ];
-        return arr;
     }
 }
 

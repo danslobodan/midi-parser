@@ -45,15 +45,22 @@ export const getEvents = (dataStream: IDataStream): MidiEvent[] => {
     let lastStatusByte = statusByte;
 
     while (statusByte !== EventType.END_OF_FILE) {
+        let runningStatus = false;
         // New status
         if (statusByte >= 128) lastStatusByte = statusByte;
         // Running status
         else {
+            runningStatus = true;
             statusByte = lastStatusByte;
             dataStream.movePointer(-1);
         }
 
-        const event = getMidiEvent(deltaTime, statusByte, dataStream);
+        const event = getMidiEvent(
+            deltaTime,
+            statusByte,
+            dataStream,
+            runningStatus
+        );
         events.push(event);
 
         if ((event as MetaEvent)?.metaType === MetaEventType.END_OF_TRACK)

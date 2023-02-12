@@ -85,7 +85,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -98,7 +99,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -111,58 +113,50 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 240,
-          "data": [
-            55,
-            64
-          ],
           "pitch": {
             "value": 55,
             "note": "G3"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            58,
-            64
-          ],
           "pitch": {
             "value": 58,
             "note": "A#3"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            64,
-            64
-          ],
           "pitch": {
             "value": 64,
             "note": "E4"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -175,7 +169,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -188,7 +183,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -201,58 +197,50 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 240,
-          "data": [
-            55,
-            64
-          ],
           "pitch": {
             "value": 55,
             "note": "G3"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            58,
-            64
-          ],
           "pitch": {
             "value": 58,
             "note": "A#3"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 0,
-          "data": [
-            64,
-            64
-          ],
           "pitch": {
             "value": 64,
             "note": "E4"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -265,7 +253,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -278,7 +267,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -291,7 +281,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "End Of Track",
@@ -325,24 +316,22 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 0,
           "deltaTime": 120,
-          "data": [
-            48,
-            64
-          ],
           "pitch": {
             "value": 48,
             "note": "C3"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -355,7 +344,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "End Of Track",
@@ -383,17 +373,14 @@
           "type": 8,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -406,7 +393,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -419,41 +407,36 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            36,
-            64
-          ],
           "pitch": {
             "value": 36,
             "note": "C2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -466,24 +449,22 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -496,7 +477,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -509,41 +491,36 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            38,
-            64
-          ],
           "pitch": {
             "value": 38,
             "note": "D2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -556,24 +533,22 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -586,7 +561,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -599,41 +575,36 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            38,
-            64
-          ],
           "pitch": {
             "value": 38,
             "note": "D2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 0,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "Note On",
@@ -646,24 +617,22 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
           "type": 8,
           "channel": 9,
           "deltaTime": 240,
-          "data": [
-            42,
-            64
-          ],
           "pitch": {
             "value": 42,
             "note": "F#2"
           },
           "velocity": {
             "value": 64
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -676,7 +645,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": false
         },
         {
           "name": "Note On",
@@ -689,7 +659,8 @@
           },
           "velocity": {
             "value": 100
-          }
+          },
+          "runningStatus": true
         },
         {
           "name": "End Of Track",
