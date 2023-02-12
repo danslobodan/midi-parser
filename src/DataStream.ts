@@ -54,15 +54,13 @@ class DataStream implements IDataStream {
         const bytes = [];
 
         const CONTINUATION_BIT = 0b10000000;
-        while (this.data.getUint8(this.pointer) & CONTINUATION_BIT) {
+        while (true) {
             const valueByte = this.readInt(1);
             const value7bit = valueByte & ~CONTINUATION_BIT;
             bytes.push(value7bit);
 
             if (!(valueByte & CONTINUATION_BIT)) break;
         }
-        const lastByte = this.readInt(1);
-        bytes.push(lastByte);
 
         const bytesReversed = bytes.reverse();
 
