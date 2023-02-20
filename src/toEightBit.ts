@@ -1,4 +1,4 @@
-const numberTo8bitArray = (num: number): number[] => {
+const numberTo8bitArrayVariableLength = (num: number): number[] => {
     const binaryString7bit = num.toString(2);
 
     const bytes = Math.ceil(binaryString7bit.length / 7);
@@ -30,13 +30,13 @@ const numberTo8bitArray = (num: number): number[] => {
 
     const num8bit = parseInt(binaryString8bit, 2);
 
-    return numberTo8bitArrayFixedSize(num8bit, bytes);
+    return numberTo8bitArray(num8bit, bytes);
 };
 
-const numberTo8bitArrayFixedSize = (num: number, size: number): number[] => {
+const numberTo8bitArray = (num: number, sizeInBytes: number): number[] => {
     let shifter = num;
     const arr: number[] = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < sizeInBytes; i++) {
         const last8 = shifter & 0b11111111;
         shifter = shifter >> 8;
         arr.push(last8);
@@ -55,4 +55,8 @@ const stringTo8BitArray = (str: string): number[] => {
     return arr;
 };
 
-export { numberTo8bitArray, numberTo8bitArrayFixedSize, stringTo8BitArray };
+export {
+    numberTo8bitArrayVariableLength,
+    numberTo8bitArray,
+    stringTo8BitArray,
+};

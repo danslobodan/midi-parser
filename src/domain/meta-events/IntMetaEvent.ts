@@ -1,6 +1,6 @@
 import {
+    numberTo8bitArrayVariableLength,
     numberTo8bitArray,
-    numberTo8bitArrayFixedSize,
 } from "../../toEightBit";
 import { EventType } from "../EventType";
 import { MetaEventType } from "../MetaEventType";
@@ -29,11 +29,11 @@ class IntMetaEvent implements MetaEvent {
 
     public encode(): number[] {
         const arr = [
-            ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArrayFixedSize(this.type, 1),
-            ...numberTo8bitArrayFixedSize(this.metaType, 1),
-            ...numberTo8bitArray(this.length),
-            ...numberTo8bitArrayFixedSize(this.data, 1),
+            ...numberTo8bitArrayVariableLength(this.deltaTime),
+            ...numberTo8bitArray(this.type, 1),
+            ...numberTo8bitArray(this.metaType, 1),
+            ...numberTo8bitArrayVariableLength(this.length),
+            ...numberTo8bitArray(this.data, 1),
         ];
         return arr;
     }

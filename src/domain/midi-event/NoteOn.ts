@@ -11,8 +11,8 @@
 // "VVV VVVV" is the velocity value (from 0 to 127)
 
 import {
+    numberTo8bitArrayVariableLength,
     numberTo8bitArray,
-    numberTo8bitArrayFixedSize,
 } from "../../toEightBit";
 import { EventType } from "../EventType";
 import { RegularEvent } from "../MidiEvent";
@@ -45,17 +45,17 @@ class NoteOn implements RegularEvent {
     public encode(): number[] {
         if (this.runningStatus) {
             return [
-                ...numberTo8bitArray(this.deltaTime),
-                ...numberTo8bitArrayFixedSize(this.pitch.Value(), 1),
-                ...numberTo8bitArrayFixedSize(this.velocity.Value(), 1),
+                ...numberTo8bitArrayVariableLength(this.deltaTime),
+                ...numberTo8bitArray(this.pitch.Value(), 1),
+                ...numberTo8bitArray(this.velocity.Value(), 1),
             ];
         }
 
         return [
-            ...numberTo8bitArray(this.deltaTime),
-            ...numberTo8bitArrayFixedSize((this.type << 4) + this.channel, 1),
-            ...numberTo8bitArrayFixedSize(this.pitch.Value(), 1),
-            ...numberTo8bitArrayFixedSize(this.velocity.Value(), 1),
+            ...numberTo8bitArrayVariableLength(this.deltaTime),
+            ...numberTo8bitArray((this.type << 4) + this.channel, 1),
+            ...numberTo8bitArray(this.pitch.Value(), 1),
+            ...numberTo8bitArray(this.velocity.Value(), 1),
         ];
     }
 }

@@ -1,5 +1,5 @@
 import { DataStream, IDataStream } from "../DataStream";
-import { numberTo8bitArrayFixedSize } from "../toEightBit";
+import { numberTo8bitArray } from "../toEightBit";
 import { getTrack, MidiTrack } from "./MidiTrack";
 
 interface MidiFile {
@@ -35,6 +35,15 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
     const timeDivision = dataStream.readInt(2);
     const tracks = getTracks(dataStream, numberOfTracks);
 
+    const encodeTracks = (tracks: MidiTrack[]) => {
+        const encoded: number[] = [];
+        for (let i = 0; i < tracks.length; i++) {
+            const encodedTrack = tracks[i].encode();
+            encoded.push(...encodedTrack);
+        }
+        return encoded;
+    };
+
     const midiFile = {
         header: {
             midiIdentifier: midiIdentifier.toString(16),
@@ -45,18 +54,13 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
         },
         tracks,
         encode: (): number[] => {
-            let encoded: number[] = [];
-            for (let i = 0; i < tracks.length; i++) {
-                encoded = [...encoded, ...tracks[i].encode()];
-            }
-
             return [
-                ...numberTo8bitArrayFixedSize(midiIdentifier, 4),
-                ...numberTo8bitArrayFixedSize(headerSize, 4),
-                ...numberTo8bitArrayFixedSize(fileFormat, 2),
-                ...numberTo8bitArrayFixedSize(numberOfTracks, 2),
-                ...numberTo8bitArrayFixedSize(timeDivision, 2),
-                ...encoded,
+                ...numberTo8bitArray(midiIdentifier, 4),
+                ...numberTo8bitArray(headerSize, 4),
+                ...numberTo8bitArray(fileFormat, 2),
+                ...numberTo8bitArray(numberOfTracks, 2),
+                ...numberTo8bitArray(timeDivision, 2),
+                ...encodeTracks(tracks),
             ];
         },
     };

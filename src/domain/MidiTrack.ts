@@ -2,7 +2,7 @@ import { IDataStream } from "../DataStream";
 import { getMidiEvent, MetaEvent, MidiEvent } from "./MidiEvent";
 import { EventType } from "./EventType";
 import { MetaEventType } from "./MetaEventType";
-import { numberTo8bitArray, numberTo8bitArrayFixedSize } from "../toEightBit";
+import { numberTo8bitArray } from "../toEightBit";
 
 interface MidiTrack {
     header: string;
@@ -17,20 +17,25 @@ export const getTrack = (dataStream: IDataStream): MidiTrack => {
     const lengthBytes = dataStream.readInt(4);
     const events = getEvents(dataStream);
 
+    const encodeEvents = (midiEvent: MidiEvent[]): number[] => {
+        const encoded: number[] = [];
+        for (let i = 0; i < events.length; i++) {
+            const encodedEvent = events[i].encode();
+            encoded.push(...encodedEvent);
+        }
+        return encoded;
+    };
+
     return {
         header: TRACK_HEADER_SIGNATURE.toString(16),
         lengthBytes,
         events,
         encode: () => {
-            let encodedTrack: number[] = [
-                ...numberTo8bitArrayFixedSize(TRACK_HEADER_SIGNATURE, 4),
-                ...numberTo8bitArrayFixedSize(lengthBytes, 4),
+            const encodedTrack: number[] = [
+                ...numberTo8bitArray(TRACK_HEADER_SIGNATURE, 4),
+                ...numberTo8bitArray(lengthBytes, 4),
+                ...encodeEvents(events),
             ];
-
-            for (let i = 0; i < events.length; i++) {
-                const encodedEvent = events[i].encode();
-                encodedTrack = [...encodedTrack, ...encodedEvent];
-            }
 
             return encodedTrack;
         },
