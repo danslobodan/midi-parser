@@ -10,8 +10,8 @@
 // "PPP PPPP" is the pitch value (from 0 to 127) - middle C = 60, C# = 61, D = 62
 // "VVV VVVV" is the release velocity value (from 0 to 127) - usually 0
 
-import { EventType } from "../EventType";
-import { RegularEvent } from "../MidiEvent";
+import { IRegularEvent } from "./IRegularEvent";
+import { EventType } from "../IMidiEvent";
 import { Pitch } from "./midi-component/Pitch";
 import { Velocity } from "./midi-component/Velocity";
 import {
@@ -19,7 +19,7 @@ import {
     numberTo8bitArray,
 } from "../../toEightBit";
 
-class NoteOff implements RegularEvent {
+class NoteOff implements IRegularEvent {
     public name = "Note Off";
     public deltaTime: number;
     public type = EventType.NOTE_OFF;
@@ -31,15 +31,15 @@ class NoteOff implements RegularEvent {
 
     constructor(
         deltaTime: number,
-        statusByte: number,
-        dataByte1: number,
-        dataByte2: number,
+        channel: number,
+        pitch: Pitch,
+        velocity: Velocity,
         runningStatus: boolean
     ) {
-        this.channel = statusByte & 0b00001111;
+        this.channel = channel;
         this.deltaTime = deltaTime;
-        this.pitch = new Pitch(dataByte1);
-        this.velocity = new Velocity(dataByte2);
+        this.pitch = pitch;
+        this.velocity = velocity;
         this.runningStatus = runningStatus;
     }
 

@@ -2,11 +2,10 @@ import {
     numberTo8bitArrayVariableLength,
     numberTo8bitArray,
 } from "../../toEightBit";
-import { EventType } from "../EventType";
-import { MetaEventType } from "../MetaEventType";
-import { MetaEvent } from "../MidiEvent";
+import { EventType } from "../IMidiEvent";
+import { IMetaEvent, MetaEventType } from "./IMetaEvent";
 
-class TimeSignature implements MetaEvent {
+class TimeSignature implements IMetaEvent {
     public name = "Time Signature";
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;

@@ -1,6 +1,4 @@
 import { IDataStream } from "../DataStream";
-import { EventType } from "./EventType";
-import { MetaEventType } from "./MetaEventType";
 import { EndOfTrack } from "./meta-events/EndOfTrack";
 import { IntMetaEvent } from "./meta-events/IntMetaEvent";
 import { NoteOff } from "./midi-event/NoteOff";
@@ -9,46 +7,35 @@ import { SMPTEOffset } from "./meta-events/SMPTEOffset";
 import { StringMetaEvent } from "./meta-events/StringMetaEvent";
 import { TimeSignature } from "./meta-events/TimeSignature";
 import { SetTempo } from "./meta-events/SetTempo";
+import { Pitch } from "./midi-event/midi-component/Pitch";
+import { Velocity } from "./midi-event/midi-component/Velocity";
+import { IMidiEvent, EventType } from "./IMidiEvent";
+import { IRegularEvent } from "./midi-event/IRegularEvent";
+import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
 
-interface MidiEvent {
-    name: string;
-    deltaTime: number;
-    type: EventType;
-    encode: () => number[];
-}
-
-interface MetaEvent extends MidiEvent {
-    metaType: MetaEventType;
-    length: number;
-}
-
-interface RegularEvent extends MidiEvent {
-    channel: number;
-}
-
-export const getMidiEvent = (
+export const decodeEvent = (
     deltaTime: number,
     statusByte: number,
     dataStream: IDataStream,
     runningStatus: boolean
-): MidiEvent => {
+): IMidiEvent => {
     if (statusByte === EventType.META_EVENT_TYPE)
-        return getMetaEvent(dataStream, deltaTime);
+        return decodeMetaEvent(dataStream, deltaTime);
 
-    return getRegularEvent(dataStream, deltaTime, statusByte, runningStatus);
+    return decodeRegularEvent(dataStream, deltaTime, statusByte, runningStatus);
 };
 
-const getRegularEvent = (
+const decodeRegularEvent = (
     dataStream: IDataStream,
     deltaTime: number,
     statusByte: number,
     runningStatus: boolean
-): RegularEvent => {
+): IRegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
     const channel = statusByte & 0b00001111;
     const name = EventType[type] || "Unknown";
 
-    const regularEvent: RegularEvent = {
+    const regularEvent: IRegularEvent = {
         name,
         type,
         channel,
@@ -69,53 +56,40 @@ const getRegularEvent = (
         case EventType.NOTE_OFF:
             return new NoteOff(
                 deltaTime,
-                statusByte,
-                dataStream.readInt(1),
-                dataStream.readInt(1),
+                channel,
+                new Pitch(dataStream.readInt(1)),
+                new Velocity(dataStream.readInt(1)),
                 runningStatus
             );
         case EventType.NOTE_ON:
             return new NoteOn(
                 deltaTime,
-                statusByte,
-                dataStream.readInt(1),
-                dataStream.readInt(1),
+                channel,
+                new Pitch(dataStream.readInt(1)),
+                new Velocity(dataStream.readInt(1)),
                 runningStatus
             );
         case EventType.PROGRAM_CHANGE:
         case EventType.CHANNEL_AFTERTOUCH:
             // regularEvent.data = dataStream.readInt(1);
             break;
-        case EventType.END_OF_FILE:
-            break;
         default:
-            throw new Error("Unknown EVENT detected. Reading cancelled!");
+            throw new Error("Unknown midi event detected.");
     }
 
     return regularEvent;
 };
 
-const getMetaEvent = (
+const decodeMetaEvent = (
     dataStream: IDataStream,
     deltaTime: number
-): MetaEvent => {
+): IMetaEvent => {
     const metaType = dataStream.readInt(1);
     const length = dataStream.readIntVariableLengthValue();
 
     switch (metaType) {
         case MetaEventType.END_OF_TRACK:
             return new EndOfTrack(deltaTime, length);
-        case MetaEventType.END_OF_FILE:
-            return {
-                name: "End Of File",
-                type: EventType.META_EVENT_TYPE,
-                metaType,
-                length,
-                deltaTime,
-                encode: () => {
-                    return [-1];
-                },
-            };
         case MetaEventType.TEXT_EVENT:
         case MetaEventType.COPYRIGHT_NOTICE:
         case MetaEventType.TRACK_NAME:
@@ -164,5 +138,3 @@ const getMetaEvent = (
             );
     }
 };
-
-export type { MidiEvent, MetaEvent, RegularEvent };

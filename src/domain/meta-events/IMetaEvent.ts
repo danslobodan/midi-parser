@@ -1,3 +1,5 @@
+import { IMidiEvent } from "../IMidiEvent";
+
 export enum MetaEventType {
     TEXT_EVENT = 0x01,
     COPYRIGHT_NOTICE = 0x02,
@@ -13,5 +15,9 @@ export enum MetaEventType {
     SMPTE_OFFSET = 0x54,
     TIME_SIGNATURE = 0x58,
     KEY_SIGNATURE = 0x59,
-    END_OF_FILE = -1,
+}
+
+export interface IMetaEvent extends IMidiEvent {
+    metaType: MetaEventType;
+    length: number;
 }

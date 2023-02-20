@@ -2,11 +2,10 @@ import {
     numberTo8bitArrayVariableLength,
     numberTo8bitArray,
 } from "../../toEightBit";
-import { EventType } from "../EventType";
-import { MetaEventType } from "../MetaEventType";
-import { MetaEvent } from "../MidiEvent";
+import { EventType } from "../IMidiEvent";
+import { IMetaEvent, MetaEventType } from "./IMetaEvent";
 
-class SetTempo implements MetaEvent {
+class SetTempo implements IMetaEvent {
     public name: string = "Set Tempo";
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;

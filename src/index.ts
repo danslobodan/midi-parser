@@ -1,6 +1,6 @@
 import fs from "fs";
 import { DataStream } from "./DataStream";
-import { decodeMidi } from "./domain/MidiFile";
+import { decodeFile, encodeFile } from "./domain/MidiFile";
 
 const start = () => {
     console.log("Program Started");
@@ -12,11 +12,11 @@ const start = () => {
         data.byteLength
     );
     const dataStream = new DataStream(dataView);
-    const midiFile = decodeMidi(dataStream);
+    const midiFile = decodeFile(dataStream);
 
     fs.writeFileSync("result.json", JSON.stringify(midiFile, null, 2));
 
-    const encoded = midiFile.encode();
+    const encoded = encodeFile(midiFile);
     const uint = new Uint8Array(encoded);
 
     fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));

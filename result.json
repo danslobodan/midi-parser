@@ -285,6 +285,48 @@
           "runningStatus": true
         },
         {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
           "name": "End Of Track",
           "type": 255,
           "metaType": 47,
@@ -344,6 +386,20 @@
           },
           "velocity": {
             "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 0,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 48,
+            "name": "C3"
+          },
+          "velocity": {
+            "value": 64
           },
           "runningStatus": false
         },
@@ -661,6 +717,34 @@
             "value": 100
           },
           "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 36,
+            "name": "C2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": 9,
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
         },
         {
           "name": "End Of Track",

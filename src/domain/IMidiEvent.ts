@@ -8,5 +8,11 @@ export enum EventType {
     PITCH_BEND_EVENT = 0xe,
     SYSTEM_EXCLUSIVE_EVENT = 0xf,
     META_EVENT_TYPE = 0xff,
-    END_OF_FILE = -1,
+}
+
+export interface IMidiEvent {
+    name: string;
+    deltaTime: number;
+    type: EventType;
+    encode: () => number[];
 }

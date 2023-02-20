@@ -1,11 +1,10 @@
 import { DataStream, IDataStream } from "../DataStream";
 import { numberTo8bitArray } from "../toEightBit";
-import { getTrack, MidiTrack } from "./MidiTrack";
+import { decodeTrack, encodeTrack, IMidiTrack } from "./MidiTrack";
 
 interface MidiFile {
     header: MidiHeader;
-    tracks: MidiTrack[];
-    encode: () => number[];
+    tracks: IMidiTrack[];
 }
 
 enum MidiFileFormat {
@@ -22,27 +21,20 @@ interface MidiHeader {
     timeDivision: number;
 }
 
-export const decodeMidi = (dataStream: DataStream): MidiFile => {
+const MIDI_FILE_SIGNATURE = 0x4d546864;
+
+export const decodeFile = (dataStream: DataStream): MidiFile => {
     const midiIdentifier = dataStream.readInt(4);
 
-    if (midiIdentifier !== 0x4d546864) {
-        throw Error("Invalid header");
+    if (midiIdentifier !== MIDI_FILE_SIGNATURE) {
+        throw Error("Invalid midi file header");
     }
 
     const headerSize = dataStream.readInt(4);
     const fileFormat: MidiFileFormat = dataStream.readInt(2);
     const numberOfTracks = dataStream.readInt(2);
     const timeDivision = dataStream.readInt(2);
-    const tracks = getTracks(dataStream, numberOfTracks);
-
-    const encodeTracks = (tracks: MidiTrack[]) => {
-        const encoded: number[] = [];
-        for (let i = 0; i < tracks.length; i++) {
-            const encodedTrack = tracks[i].encode();
-            encoded.push(...encodedTrack);
-        }
-        return encoded;
-    };
+    const tracks = decodeTracks(dataStream, numberOfTracks);
 
     const midiFile = {
         header: {
@@ -53,16 +45,6 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
             timeDivision,
         },
         tracks,
-        encode: (): number[] => {
-            return [
-                ...numberTo8bitArray(midiIdentifier, 4),
-                ...numberTo8bitArray(headerSize, 4),
-                ...numberTo8bitArray(fileFormat, 2),
-                ...numberTo8bitArray(numberOfTracks, 2),
-                ...numberTo8bitArray(timeDivision, 2),
-                ...encodeTracks(tracks),
-            ];
-        },
     };
 
     return midiFile;
@@ -71,11 +53,11 @@ export const decodeMidi = (dataStream: DataStream): MidiFile => {
 const TRACK_HEADER_SIGNATURE = 0x4d54726b;
 const END_OF_FILE = -1;
 
-const getTracks = (
+const decodeTracks = (
     dataStream: IDataStream,
     numberOfTracks: number
-): MidiTrack[] => {
-    const tracks: MidiTrack[] = [];
+): IMidiTrack[] => {
+    const tracks: IMidiTrack[] = [];
 
     for (let i = 1; i <= numberOfTracks; i++) {
         const trackHeader = dataStream.readInt(4);
@@ -83,11 +65,35 @@ const getTracks = (
         if (trackHeader === END_OF_FILE) break;
         if (trackHeader !== TRACK_HEADER_SIGNATURE) return tracks;
 
-        const track = getTrack(dataStream);
+        const track = decodeTrack(dataStream);
         tracks.push(track);
     }
 
     return tracks;
+};
+
+const encodeTracks = (tracks: IMidiTrack[]) => {
+    const encoded: number[] = [];
+    for (let i = 0; i < tracks.length; i++) {
+        const encodedTrack = encodeTrack(tracks[i]);
+        encoded.push(...encodedTrack);
+    }
+    return encoded;
+};
+
+export const encodeFile = (midiFile: MidiFile): number[] => {
+    const {
+        header: { headerSize, fileFormat, numberOfTracks, timeDivision },
+    } = midiFile;
+
+    return [
+        ...numberTo8bitArray(MIDI_FILE_SIGNATURE, 4),
+        ...numberTo8bitArray(headerSize, 4),
+        ...numberTo8bitArray(fileFormat, 2),
+        ...numberTo8bitArray(numberOfTracks, 2),
+        ...numberTo8bitArray(timeDivision, 2),
+        ...encodeTracks(midiFile.tracks),
+    ];
 };
 
 export type { MidiFile, MidiFileFormat };
