@@ -17,7 +17,7 @@ export const getTrack = (dataStream: IDataStream): MidiTrack => {
     const lengthBytes = dataStream.readInt(4);
     const events = getEvents(dataStream);
 
-    const encodeEvents = (midiEvent: MidiEvent[]): number[] => {
+    const encodeEvents = (events: MidiEvent[]): number[] => {
         const encoded: number[] = [];
         for (let i = 0; i < events.length; i++) {
             const encodedEvent = events[i].encode();
