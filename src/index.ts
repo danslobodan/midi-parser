@@ -20,6 +20,7 @@ const start = () => {
     const uint = new Uint8Array(encoded);
 
     fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
+    fs.writeFileSync("midi34-new.mid", uint);
 };
 
 start();

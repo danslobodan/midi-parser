@@ -46,16 +46,16 @@ class NoteOn implements RegularEvent {
         if (this.runningStatus) {
             return [
                 ...numberTo8bitArray(this.deltaTime),
-                ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
-                ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
+                ...numberTo8bitArrayFixedSize(this.pitch.Value(), 1),
+                ...numberTo8bitArrayFixedSize(this.velocity.Value(), 1),
             ];
         }
 
         return [
             ...numberTo8bitArray(this.deltaTime),
             ...numberTo8bitArrayFixedSize((this.type << 4) + this.channel, 1),
-            ...numberTo8bitArrayFixedSize(this.pitch.value, 1),
-            ...numberTo8bitArrayFixedSize(this.velocity.value, 1),
+            ...numberTo8bitArrayFixedSize(this.pitch.Value(), 1),
+            ...numberTo8bitArrayFixedSize(this.velocity.Value(), 1),
         ];
     }
 }
