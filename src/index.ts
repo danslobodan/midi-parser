@@ -1,11 +1,24 @@
 import fs from "fs";
 import { DataStream } from "./DataStream";
-import { decodeFile, encodeFile } from "./domain/MidiFile";
+import { decodeFile, encodeFile, MidiFile } from "./domain/MidiFile";
 
 const start = () => {
     console.log("Program Started");
 
-    const data = fs.readFileSync("midi34.mid");
+    const midi34 = loadMidiFile("midi/Midi_34_1.mid");
+    const midi44 = loadMidiFile("midi/Midi_44_1.mid");
+
+    fs.writeFileSync("result.json", JSON.stringify(midi34, null, 2));
+
+    const encoded = encodeFile(midi34);
+    const uint = new Uint8Array(encoded);
+
+    fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
+    fs.writeFileSync("midi/generated.mid", uint);
+};
+
+const loadMidiFile = (fileName: string): MidiFile => {
+    const data = fs.readFileSync(fileName);
     const dataView = new DataView(
         data.buffer,
         data.byteOffset,
@@ -13,14 +26,7 @@ const start = () => {
     );
     const dataStream = new DataStream(dataView);
     const midiFile = decodeFile(dataStream);
-
-    fs.writeFileSync("result.json", JSON.stringify(midiFile, null, 2));
-
-    const encoded = encodeFile(midiFile);
-    const uint = new Uint8Array(encoded);
-
-    fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
-    fs.writeFileSync("midi34-new.mid", uint);
+    return midiFile;
 };
 
 start();
