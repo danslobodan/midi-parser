@@ -12,6 +12,7 @@ const start = () => {
     const encoded = encodeFile(midiFile);
     const uint = new Uint8Array(encoded);
 
+    fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
     fs.writeFileSync("midi/generated.mid", uint);
 };
 
@@ -22,12 +23,6 @@ const loadMidiFile = (fileName: string): MidiFile => {
         data.byteOffset,
         data.byteLength
     );
-
-    fs.writeFileSync(
-        "uint.json",
-        JSON.stringify(new Uint8Array(data), null, 2)
-    );
-
     const dataStream = new DataStream(dataView);
     const midiFile = decodeFile(dataStream);
 
