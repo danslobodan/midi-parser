@@ -1,4 +1,4 @@
-class Channel {
+export class Channel {
     private value: number = 0;
 
     constructor(statusByte: number) {

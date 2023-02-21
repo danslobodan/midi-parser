@@ -1,17 +1,20 @@
 import { IDataStream } from "../DataStream";
 import { EndOfTrack } from "./meta-events/EndOfTrack";
 import { IntMetaEvent } from "./meta-events/IntMetaEvent";
-import { NoteOff } from "./midi-event/NoteOff";
-import { NoteOn } from "./midi-event/NoteOn";
 import { SMPTEOffset } from "./meta-events/SMPTEOffset";
 import { StringMetaEvent } from "./meta-events/StringMetaEvent";
 import { TimeSignature } from "./meta-events/TimeSignature";
 import { SetTempo } from "./meta-events/SetTempo";
-import { Pitch } from "./midi-event/midi-component/Pitch";
-import { Velocity } from "./midi-event/midi-component/Velocity";
 import { IMidiEvent, EventType } from "./IMidiEvent";
-import { IRegularEvent } from "./midi-event/IRegularEvent";
 import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
+import { NoteOff, NoteOn, IRegularEvent, ControllerChange } from "./midi-event";
+import {
+    Pitch,
+    Velocity,
+    ControllerNumber,
+    ControllerValue,
+    Channel,
+} from "./midi-event/midi-component";
 
 export const decodeEvent = (
     deltaTime: number,
@@ -32,7 +35,7 @@ const decodeRegularEvent = (
     runningStatus: boolean
 ): IRegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
-    const channel = statusByte & 0b00001111;
+    const channel = new Channel(statusByte & 0b00001111);
     const name = EventType[type] || "Unknown";
 
     const regularEvent: IRegularEvent = {
@@ -40,6 +43,7 @@ const decodeRegularEvent = (
         type,
         channel,
         deltaTime,
+        runningStatus,
         encode: () => [],
     };
 
@@ -50,7 +54,15 @@ const decodeRegularEvent = (
             break;
         }
         case EventType.NOTE_AFTERTOUCH:
-        case EventType.CONTROLLER:
+            break;
+        case EventType.CONTROLLER_CHANGE:
+            return new ControllerChange(
+                deltaTime,
+                channel,
+                new ControllerNumber(dataStream.readInt(1)),
+                new ControllerValue(dataStream.readInt(1)),
+                runningStatus
+            );
         case EventType.PITCH_BEND_EVENT:
             break;
         case EventType.NOTE_OFF:

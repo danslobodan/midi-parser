@@ -38,8 +38,9 @@ const encodeEvents = (events: IMidiEvent[]): number[] => {
 };
 
 export const encodeTrack = (midiTrack: IMidiTrack) => {
-    const closedNotes = closeNotes(midiTrack.events);
-    const encodedEvents = encodeEvents(closedNotes);
+    // const closedNotes = closeNotes(midiTrack.events);
+    // const encodedEvents = encodeEvents(closedNotes);
+    const encodedEvents = encodeEvents(midiTrack.events);
 
     const encodedTrack: number[] = [
         ...numberTo8bitArray(TRACK_HEADER_SIGNATURE, 4),

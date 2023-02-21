@@ -2,6 +2,9 @@
 // The purpose of a MIDI controller is to set a value of a parameter in the synthesizer playing the notes,
 // like the volume, the panoramic (position in space from left to right in stereo), the level of reverberation,...
 
+import { EventType } from "../IMidiEvent";
+import { IRegularEvent } from "./IRegularEvent";
+
 // The message is constructed as follows:
 
 // Status byte : 1011 CCCC
@@ -22,44 +25,49 @@
 // 121 = All controllers off (this message clears all the controller values for this channel, back to their default values)
 // 123 = All notes off (this message stops all the notes that are currently playing)
 
-class MidiController {
+import { Channel, ControllerNumber, ControllerValue } from "./midi-component";
+import {
+    numberTo8bitArrayVariableLength,
+    numberTo8bitArray,
+} from "../../toEightBit";
+
+export class ControllerChange implements IRegularEvent {
+    public name = "Controller Change";
+    public deltaTime: number;
+    public type = EventType.CONTROLLER_CHANGE;
     public channel: Channel;
     public controllerNubmer: ControllerNumber;
     public controllerValue: ControllerValue;
+    public runningStatus: boolean;
 
-    constructor(statusByte: number, dataByte1: number, dataByte2: number) {
-        this.channel = new Channel(statusByte);
-        this.controllerNubmer = new ControllerNumber(dataByte1);
-        this.controllerValue = new ControllerValue(dataByte2);
-    }
-}
-
-class ControllerNumber {
-    private value: number = 0;
-
-    constructor(dataByte: number) {
-        if (dataByte < 0 || dataByte > 127)
-            throw Error("Controller number value must be between 0 and 127");
-
-        this.value = dataByte;
+    constructor(
+        deltaTime: number,
+        channel: Channel,
+        controllerNubmer: ControllerNumber,
+        controllerValue: ControllerValue,
+        runningStatus: boolean
+    ) {
+        this.deltaTime = deltaTime;
+        this.channel = channel;
+        this.controllerNubmer = controllerNubmer;
+        this.controllerValue = controllerValue;
+        this.runningStatus = runningStatus;
     }
 
-    public Value(): number {
-        return this.value;
-    }
-}
+    public encode(): number[] {
+        if (this.runningStatus) {
+            return [
+                ...numberTo8bitArrayVariableLength(this.deltaTime),
+                ...numberTo8bitArray(this.controllerNubmer.Value(), 1),
+                ...numberTo8bitArray(this.controllerValue.Value(), 1),
+            ];
+        }
 
-class ControllerValue {
-    private value: number = 0;
-
-    constructor(dataByte: number) {
-        if (dataByte < 0 || dataByte > 127)
-            throw Error("Controller value must be between 0 and 127");
-
-        this.value = dataByte;
-    }
-
-    public Value(): number {
-        return this.value;
+        return [
+            ...numberTo8bitArrayVariableLength(this.deltaTime),
+            ...numberTo8bitArray((this.type << 4) + this.channel.Value(), 1),
+            ...numberTo8bitArray(this.controllerNubmer.Value(), 1),
+            ...numberTo8bitArray(this.controllerValue.Value(), 1),
+        ];
     }
 }

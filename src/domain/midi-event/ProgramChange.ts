@@ -4,7 +4,9 @@
 // Status byte : 1100 CCCC
 // Data byte 1 : 0XXX XXXX
 
-class ProgramChange {
+import { Channel, Instrument } from "./midi-component";
+
+export class ProgramChange {
     public channel: Channel;
     public instrument: Instrument;
 
