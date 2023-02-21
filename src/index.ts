@@ -5,12 +5,11 @@ import { decodeFile, encodeFile, MidiFile } from "./domain/MidiFile";
 const start = () => {
     console.log("Program Started");
 
-    const midi34 = loadMidiFile("midi/Midi_34_1.mid");
     const midi44 = loadMidiFile("midi/Midi_44_1.mid");
 
-    fs.writeFileSync("result.json", JSON.stringify(midi34, null, 2));
+    fs.writeFileSync("result.json", JSON.stringify(midi44, null, 2));
 
-    const encoded = encodeFile(midi34);
+    const encoded = encodeFile(midi44);
     const uint = new Uint8Array(encoded);
 
     fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
@@ -26,6 +25,7 @@ const loadMidiFile = (fileName: string): MidiFile => {
     );
     const dataStream = new DataStream(dataView);
     const midiFile = decodeFile(dataStream);
+
     return midiFile;
 };
 
