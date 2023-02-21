@@ -1,0 +1,740 @@
+{
+  "header": {
+    "midiIdentifier": "4d546864",
+    "headerSize": 6,
+    "fileFormat": 1,
+    "numberOfTracks": 4,
+    "timeDivision": 480
+  },
+  "tracks": [
+    {
+      "header": "4d54726b",
+      "lengthBytes": 41,
+      "events": [
+        {
+          "type": 255,
+          "name": "TRACK_NAME",
+          "metaType": 3,
+          "length": 9,
+          "deltaTime": 0,
+          "data": "Midi_34_1"
+        },
+        {
+          "name": "Set Tempo",
+          "type": 255,
+          "metaType": 81,
+          "deltaTime": 0,
+          "length": 3,
+          "data": 500000
+        },
+        {
+          "name": "Time Signature",
+          "type": 255,
+          "metaType": 88,
+          "deltaTime": 0,
+          "length": 4,
+          "data": [
+            3,
+            2,
+            24,
+            8
+          ]
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "deltaTime": 0,
+          "length": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 68,
+      "events": [
+        {
+          "type": 255,
+          "name": "TRACK_NAME",
+          "metaType": 3,
+          "length": 5,
+          "deltaTime": 0,
+          "data": "Piano"
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 480,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 55,
+            "name": "G3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 58,
+            "name": "A#3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 64,
+            "name": "E4"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "deltaTime": 0,
+          "length": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 25,
+      "events": [
+        {
+          "type": 255,
+          "name": "TRACK_NAME",
+          "metaType": 3,
+          "length": 4,
+          "deltaTime": 0,
+          "data": "Bass"
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 48,
+            "name": "C3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 120,
+          "pitch": {
+            "value": 48,
+            "name": "C3"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 0
+          },
+          "deltaTime": 1320,
+          "pitch": {
+            "value": 48,
+            "name": "C3"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "deltaTime": 0,
+          "length": 0
+        }
+      ]
+    },
+    {
+      "header": "4d54726b",
+      "lengthBytes": 96,
+      "events": [
+        {
+          "type": 255,
+          "name": "TRACK_NAME",
+          "metaType": 3,
+          "length": 5,
+          "deltaTime": 0,
+          "data": "Drums"
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 36,
+            "name": "C2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 36,
+            "name": "C2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 38,
+            "name": "D2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 38,
+            "name": "D2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 38,
+            "name": "D2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 38,
+            "name": "D2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note Off",
+          "type": 8,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 240,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 64
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 36,
+            "name": "C2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": false
+        },
+        {
+          "name": "Note On",
+          "type": 9,
+          "channel": {
+            "value": 9
+          },
+          "deltaTime": 0,
+          "pitch": {
+            "value": 42,
+            "name": "F#2"
+          },
+          "velocity": {
+            "value": 100
+          },
+          "runningStatus": true
+        },
+        {
+          "name": "End Of Track",
+          "type": 255,
+          "metaType": 47,
+          "deltaTime": 0,
+          "length": 0
+        }
+      ]
+    }
+  ]
+}

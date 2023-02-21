@@ -1,20 +1,16 @@
 import { IDataStream } from "../DataStream";
 import { decodeEvent } from "./MidiEvent";
-import { IMidiEvent, EventType } from "./IMidiEvent";
+import { IMidiEvent } from "./IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
 import { numberTo8bitArray } from "../toEightBit";
-import { NoteOn } from "./midi-event/NoteOn";
-import { NoteOff } from "./midi-event/NoteOff";
-import { Pitch } from "./midi-event/midi-component/Pitch";
-import { Velocity } from "./midi-event/midi-component/Velocity";
 
-interface IMidiTrack {
+export interface IMidiTrack {
     header: string;
     lengthBytes: number;
     events: IMidiEvent[];
 }
 
-const TRACK_HEADER_SIGNATURE = 0x4d54726b;
+export const TRACK_HEADER_SIGNATURE = 0x4d54726b;
 
 export const decodeTrack = (dataStream: IDataStream): IMidiTrack => {
     const lengthBytes = dataStream.readInt(4);
@@ -38,8 +34,6 @@ const encodeEvents = (events: IMidiEvent[]): number[] => {
 };
 
 export const encodeTrack = (midiTrack: IMidiTrack) => {
-    // const closedNotes = closeNotes(midiTrack.events);
-    // const encodedEvents = encodeEvents(closedNotes);
     const encodedEvents = encodeEvents(midiTrack.events);
 
     const encodedTrack: number[] = [
@@ -88,35 +82,3 @@ const decodeEvents = (dataStream: IDataStream): IMidiEvent[] => {
 
     return events;
 };
-
-const closeNotes = (events: IMidiEvent[]): IMidiEvent[] => {
-    const openNotes: Map<number, NoteOn> = new Map<number, NoteOff>();
-    for (let i = 0; i < events.length; i++) {
-        if (events[i].type === EventType.NOTE_ON) {
-            const noteOn = events[i] as NoteOn;
-            openNotes.set(noteOn.pitch.Value(), noteOn);
-        }
-        if (events[i].type === EventType.NOTE_OFF) {
-            const noteOff = events[i] as NoteOff;
-            openNotes.delete(noteOff.pitch.Value());
-        }
-    }
-
-    const endOfTrack = events.pop();
-    if (endOfTrack === undefined) return events;
-
-    const RELEASE_VELOCITY = 64;
-    const closed = [...openNotes.values()].flatMap((noteOn) => {
-        return new NoteOff(
-            endOfTrack.deltaTime,
-            noteOn.channel,
-            new Pitch(noteOn.pitch.Value()),
-            new Velocity(RELEASE_VELOCITY),
-            false
-        );
-    });
-
-    return [...events, ...closed, endOfTrack];
-};
-
-export type { IMidiTrack };

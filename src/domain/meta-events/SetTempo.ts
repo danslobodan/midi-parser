@@ -5,7 +5,7 @@ import {
 import { EventType } from "../IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./IMetaEvent";
 
-class SetTempo implements IMetaEvent {
+export class SetTempo implements IMetaEvent {
     public name: string = "Set Tempo";
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
@@ -30,5 +30,3 @@ class SetTempo implements IMetaEvent {
         return arr;
     }
 }
-
-export { SetTempo };

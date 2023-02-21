@@ -2,7 +2,7 @@ import { DataStream, IDataStream } from "../DataStream";
 import { numberTo8bitArray } from "../toEightBit";
 import { decodeTrack, encodeTrack, IMidiTrack } from "./MidiTrack";
 
-interface MidiFile {
+interface IMidiFile {
     header: MidiHeader;
     tracks: IMidiTrack[];
 }
@@ -23,7 +23,7 @@ interface MidiHeader {
 
 const MIDI_FILE_SIGNATURE = 0x4d546864;
 
-export const decodeFile = (dataStream: DataStream): MidiFile => {
+export const decodeFile = (dataStream: DataStream): IMidiFile => {
     const midiIdentifier = dataStream.readInt(4);
 
     if (midiIdentifier !== MIDI_FILE_SIGNATURE) {
@@ -81,7 +81,7 @@ const encodeTracks = (tracks: IMidiTrack[]) => {
     return encoded;
 };
 
-export const encodeFile = (midiFile: MidiFile): number[] => {
+export const encodeFile = (midiFile: IMidiFile): number[] => {
     const {
         header: { headerSize, fileFormat, numberOfTracks, timeDivision },
     } = midiFile;
@@ -96,4 +96,4 @@ export const encodeFile = (midiFile: MidiFile): number[] => {
     ];
 };
 
-export type { MidiFile, MidiFileFormat };
+export type { IMidiFile, MidiFileFormat };
