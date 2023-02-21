@@ -2,9 +2,6 @@
 // The purpose of a MIDI controller is to set a value of a parameter in the synthesizer playing the notes,
 // like the volume, the panoramic (position in space from left to right in stereo), the level of reverberation,...
 
-import { EventType } from "../IMidiEvent";
-import { IRegularEvent } from "./IRegularEvent";
-
 // The message is constructed as follows:
 
 // Status byte : 1011 CCCC
@@ -25,6 +22,8 @@ import { IRegularEvent } from "./IRegularEvent";
 // 121 = All controllers off (this message clears all the controller values for this channel, back to their default values)
 // 123 = All notes off (this message stops all the notes that are currently playing)
 
+import { EventType } from "../IMidiEvent";
+import { IRegularEvent } from "./IRegularEvent";
 import { Channel, ControllerNumber, ControllerValue } from "./midi-component";
 import {
     numberTo8bitArrayVariableLength,

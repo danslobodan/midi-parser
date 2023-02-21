@@ -7,13 +7,20 @@ import { TimeSignature } from "./meta-events/TimeSignature";
 import { SetTempo } from "./meta-events/SetTempo";
 import { IMidiEvent, EventType } from "./IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
-import { NoteOff, NoteOn, IRegularEvent, ControllerChange } from "./midi-event";
+import {
+    NoteOff,
+    NoteOn,
+    IRegularEvent,
+    ControllerChange,
+    ProgramChange,
+} from "./midi-event";
 import {
     Pitch,
     Velocity,
     ControllerNumber,
     ControllerValue,
     Channel,
+    Instrument,
 } from "./midi-event/midi-component";
 
 export const decodeEvent = (
@@ -82,6 +89,12 @@ const decodeRegularEvent = (
                 runningStatus
             );
         case EventType.PROGRAM_CHANGE:
+            return new ProgramChange(
+                deltaTime,
+                channel,
+                new Instrument(dataStream.readInt(1)),
+                runningStatus
+            );
         case EventType.CHANNEL_AFTERTOUCH:
             // regularEvent.data = dataStream.readInt(1);
             break;
