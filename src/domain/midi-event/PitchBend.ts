@@ -9,14 +9,46 @@
 // The 14 bit value of the pitch bend is defined so that a value of 0x2000 is the center corresponding
 // to the normal pitch of the note (no pitch change).
 
+import { EventType } from "../IMidiEvent";
+import { IRegularEvent } from "./IRegularEvent";
 import { Channel, BendValue } from "./midi-component";
+import {
+    numberTo8bitArrayVariableLength,
+    numberTo8bitArray,
+} from "../../toEightBit";
 
-export class PitchBend {
+export class PitchBend implements IRegularEvent {
+    public name = "Pitch Bend";
+    public deltaTime: number;
+    public type = EventType.PITCH_BEND;
     public channel: Channel;
-    public pitchBend: BendValue;
+    public bendValue: BendValue;
+    public runningStatus: boolean;
 
-    constructor(statusByte: number, dataByte1: number, dataByte2: number) {
-        this.channel = new Channel(statusByte);
-        this.pitchBend = new BendValue(dataByte1, dataByte2);
+    constructor(
+        deltaTime: number,
+        channel: Channel,
+        bendValue: BendValue,
+        runningStatus: boolean
+    ) {
+        this.deltaTime = deltaTime;
+        this.channel = channel;
+        this.bendValue = bendValue;
+        this.runningStatus = runningStatus;
+    }
+
+    public encode(): number[] {
+        if (this.runningStatus) {
+            return [
+                ...numberTo8bitArrayVariableLength(this.deltaTime),
+                ...numberTo8bitArray(this.bendValue.Value(), 2),
+            ];
+        }
+
+        return [
+            ...numberTo8bitArrayVariableLength(this.deltaTime),
+            ...numberTo8bitArray((this.type << 4) + this.channel.Value(), 1),
+            ...numberTo8bitArray(this.bendValue.Value(), 2),
+        ];
     }
 }

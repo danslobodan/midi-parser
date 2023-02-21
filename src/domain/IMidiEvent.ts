@@ -5,7 +5,7 @@ export enum EventType {
     CONTROLLER_CHANGE = 0xb,
     PROGRAM_CHANGE = 0xc,
     CHANNEL_AFTERTOUCH = 0xd,
-    PITCH_BEND_EVENT = 0xe,
+    PITCH_BEND = 0xe,
     SYSTEM_EXCLUSIVE_EVENT = 0xf,
     META_EVENT_TYPE = 0xff,
 }

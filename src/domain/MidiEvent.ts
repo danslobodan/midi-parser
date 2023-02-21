@@ -13,6 +13,7 @@ import {
     IRegularEvent,
     ControllerChange,
     ProgramChange,
+    PitchBend,
 } from "./midi-event";
 import {
     Pitch,
@@ -21,6 +22,7 @@ import {
     ControllerValue,
     Channel,
     Instrument,
+    BendValue,
 } from "./midi-event/midi-component";
 
 export const decodeEvent = (
@@ -42,7 +44,7 @@ const decodeRegularEvent = (
     runningStatus: boolean
 ): IRegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
-    const channel = new Channel(statusByte & 0b00001111);
+    const channel = new Channel(statusByte);
     const name = EventType[type] || "Unknown";
 
     const regularEvent: IRegularEvent = {
@@ -54,13 +56,15 @@ const decodeRegularEvent = (
         encode: () => [],
     };
 
-    switch (regularEvent.type) {
+    switch (type) {
         case EventType.SYSTEM_EXCLUSIVE_EVENT: {
+            console.log("System event detected");
             // const eventLength = dataStream.readIntVariableLengthValue();
             // regularEvent.data = dataStream.readInt(eventLength);
             break;
         }
         case EventType.NOTE_AFTERTOUCH:
+            console.log("Note aftertouch detected");
             break;
         case EventType.CONTROLLER_CHANGE:
             return new ControllerChange(
@@ -70,8 +74,13 @@ const decodeRegularEvent = (
                 new ControllerValue(dataStream.readInt(1)),
                 runningStatus
             );
-        case EventType.PITCH_BEND_EVENT:
-            break;
+        case EventType.PITCH_BEND:
+            return new PitchBend(
+                deltaTime,
+                channel,
+                new BendValue(dataStream.readInt(2)),
+                runningStatus
+            );
         case EventType.NOTE_OFF:
             return new NoteOff(
                 deltaTime,
@@ -96,6 +105,7 @@ const decodeRegularEvent = (
                 runningStatus
             );
         case EventType.CHANNEL_AFTERTOUCH:
+            console.log("Channel aftertouch detected");
             // regularEvent.data = dataStream.readInt(1);
             break;
         default:

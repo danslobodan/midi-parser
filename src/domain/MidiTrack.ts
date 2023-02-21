@@ -18,7 +18,7 @@ const TRACK_HEADER_SIGNATURE = 0x4d54726b;
 
 export const decodeTrack = (dataStream: IDataStream): IMidiTrack => {
     const lengthBytes = dataStream.readInt(4);
-    const events = closeNotes(decodeEvents(dataStream));
+    const events = decodeEvents(dataStream);
 
     return {
         header: TRACK_HEADER_SIGNATURE.toString(16),
