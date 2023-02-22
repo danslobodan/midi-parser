@@ -1,7 +1,7 @@
 const MIN_NOTE = 21;
 const MAX_NOTE = 108;
 
-class Pitch {
+export class Pitch {
     private name: string;
     private value: number = 0;
 
@@ -23,8 +23,6 @@ class Pitch {
         return this.value;
     }
 }
-
-export { Pitch };
 
 enum Notes {
     "C",

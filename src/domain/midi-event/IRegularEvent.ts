@@ -1,7 +1,6 @@
 import { IMidiEvent } from "../IMidiEvent";
-import { Channel } from "./midi-component";
 
 export interface IRegularEvent extends IMidiEvent {
-    channel: Channel;
+    channel: number;
     runningStatus: boolean;
 }

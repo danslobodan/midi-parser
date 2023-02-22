@@ -1,12 +1,15 @@
 import { IDataStream } from "../DataStream";
-import { EndOfTrack } from "./meta-events/EndOfTrack";
-import { IntMetaEvent } from "./meta-events/IntMetaEvent";
-import { SMPTEOffset } from "./meta-events/SMPTEOffset";
-import { StringMetaEvent } from "./meta-events/StringMetaEvent";
-import { TimeSignature } from "./meta-events/TimeSignature";
-import { SetTempo } from "./meta-events/SetTempo";
+import {
+    EndOfTrack,
+    IntMetaEvent,
+    SMPTEOffset,
+    StringMetaEvent,
+    TimeSignature,
+    SetTempo,
+    IMetaEvent,
+    MetaEventType,
+} from "./meta-events";
 import { IMidiEvent, EventType } from "./IMidiEvent";
-import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
 import {
     NoteOff,
     NoteOn,
@@ -15,13 +18,6 @@ import {
     ProgramChange,
     PitchBend,
 } from "./midi-event";
-import {
-    Pitch,
-    Velocity,
-    Channel,
-    Instrument,
-    BendValue,
-} from "./midi-event/midi-component";
 
 export const decodeEvent = (
     deltaTime: number,
@@ -42,28 +38,14 @@ const decodeRegularEvent = (
     runningStatus: boolean
 ): IRegularEvent => {
     const type = (statusByte & 0b11110000) >> 4;
-    const channel = new Channel(statusByte);
-    const name = EventType[type] || "Unknown";
-
-    const regularEvent: IRegularEvent = {
-        name,
-        type,
-        channel,
-        deltaTime,
-        runningStatus,
-        encode: () => [],
-    };
+    const channel = statusByte & 0b00001111;
 
     switch (type) {
         case EventType.SYSTEM_EXCLUSIVE_EVENT: {
-            console.log("System event detected");
-            // const eventLength = dataStream.readIntVariableLengthValue();
-            // regularEvent.data = dataStream.readInt(eventLength);
-            break;
+            throw new Error("System exclusive event not implemented.");
         }
         case EventType.NOTE_AFTERTOUCH:
-            console.log("Note aftertouch detected");
-            break;
+            throw new Error("Note aftertouch not implemented.");
         case EventType.CONTROLLER_CHANGE:
             return new ControllerChange(
                 deltaTime,
@@ -76,41 +58,37 @@ const decodeRegularEvent = (
             return new PitchBend(
                 deltaTime,
                 channel,
-                new BendValue(dataStream.readInt(2)),
+                dataStream.readInt(2),
                 runningStatus
             );
         case EventType.NOTE_OFF:
             return new NoteOff(
                 deltaTime,
                 channel,
-                new Pitch(dataStream.readInt(1)),
-                new Velocity(dataStream.readInt(1)),
+                dataStream.readInt(1),
+                dataStream.readInt(1),
                 runningStatus
             );
         case EventType.NOTE_ON:
             return new NoteOn(
                 deltaTime,
                 channel,
-                new Pitch(dataStream.readInt(1)),
-                new Velocity(dataStream.readInt(1)),
+                dataStream.readInt(1),
+                dataStream.readInt(1),
                 runningStatus
             );
         case EventType.PROGRAM_CHANGE:
             return new ProgramChange(
                 deltaTime,
                 channel,
-                new Instrument(dataStream.readInt(1)),
+                dataStream.readInt(1),
                 runningStatus
             );
         case EventType.CHANNEL_AFTERTOUCH:
-            console.log("Channel aftertouch detected");
-            // regularEvent.data = dataStream.readInt(1);
-            break;
+            throw new Error("Channel aftertouch not implemented.");
         default:
             throw new Error("Unknown midi event detected.");
     }
-
-    return regularEvent;
 };
 
 const decodeMetaEvent = (

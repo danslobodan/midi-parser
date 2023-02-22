@@ -12,7 +12,7 @@
 
 import { IRegularEvent } from "./IRegularEvent";
 import { EventType } from "../IMidiEvent";
-import { Pitch, Velocity, Channel } from "./midi-component";
+import { Pitch } from "./midi-component";
 import {
     numberTo8bitArrayVariableLength,
     numberTo8bitArray,
@@ -22,21 +22,21 @@ class NoteOn implements IRegularEvent {
     public name = "Note On";
     public deltaTime: number;
     public type = EventType.NOTE_ON;
-    public channel: Channel;
+    public channel: number;
     public pitch: Pitch;
-    public velocity: Velocity;
+    public velocity: number;
     public runningStatus: boolean;
 
     constructor(
         deltaTime: number,
-        channel: Channel,
-        pitch: Pitch,
-        velocity: Velocity,
+        channel: number,
+        pitch: number,
+        velocity: number,
         runningStatus: boolean
     ) {
         this.channel = channel;
         this.deltaTime = deltaTime;
-        this.pitch = pitch;
+        this.pitch = new Pitch(pitch);
         this.velocity = velocity;
         this.runningStatus = runningStatus;
     }
@@ -46,15 +46,15 @@ class NoteOn implements IRegularEvent {
             return [
                 ...numberTo8bitArrayVariableLength(this.deltaTime),
                 ...numberTo8bitArray(this.pitch.Value(), 1),
-                ...numberTo8bitArray(this.velocity.Value(), 1),
+                ...numberTo8bitArray(this.velocity, 1),
             ];
         }
 
         return [
             ...numberTo8bitArrayVariableLength(this.deltaTime),
-            ...numberTo8bitArray((this.type << 4) + this.channel.Value(), 1),
+            ...numberTo8bitArray((this.type << 4) + this.channel, 1),
             ...numberTo8bitArray(this.pitch.Value(), 1),
-            ...numberTo8bitArray(this.velocity.Value(), 1),
+            ...numberTo8bitArray(this.velocity, 1),
         ];
     }
 }

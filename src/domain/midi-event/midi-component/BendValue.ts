@@ -1,5 +1,7 @@
+const NO_BEND = 0x2000;
+
 export class BendValue {
-    private value: number = 0x2000;
+    private value: number = NO_BEND;
 
     constructor(value: number) {
         this.value = value;

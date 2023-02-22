@@ -6,7 +6,7 @@
 
 import { EventType } from "../IMidiEvent";
 import { IRegularEvent } from "./IRegularEvent";
-import { Channel, Instrument } from "./midi-component";
+import { Instrument } from "./midi-component";
 import {
     numberTo8bitArrayVariableLength,
     numberTo8bitArray,
@@ -14,7 +14,7 @@ import {
 
 export class ProgramChange implements IRegularEvent {
     public deltaTime: number;
-    public channel: Channel;
+    public channel: number;
     public name = "Program Change";
     public type = EventType.PROGRAM_CHANGE;
     public runningStatus: boolean;
@@ -23,7 +23,7 @@ export class ProgramChange implements IRegularEvent {
 
     constructor(
         deltaTime: number,
-        channel: Channel,
+        channel: number,
         instrument: Instrument,
         runningStatus: boolean
     ) {
@@ -37,14 +37,14 @@ export class ProgramChange implements IRegularEvent {
         if (this.runningStatus) {
             return [
                 ...numberTo8bitArrayVariableLength(this.deltaTime),
-                ...numberTo8bitArray(this.instrument.Value(), 1),
+                ...numberTo8bitArray(this.instrument, 1),
             ];
         }
 
         return [
             ...numberTo8bitArrayVariableLength(this.deltaTime),
-            ...numberTo8bitArray((this.type << 4) + this.channel.Value(), 1),
-            ...numberTo8bitArray(this.instrument.Value(), 1),
+            ...numberTo8bitArray((this.type << 4) + this.channel, 1),
+            ...numberTo8bitArray(this.instrument, 1),
         ];
     }
 }

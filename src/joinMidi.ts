@@ -2,7 +2,7 @@ import { IMidiFile } from "./domain/MidiFile";
 import { IMidiTrack, TRACK_HEADER_SIGNATURE } from "./domain/MidiTrack";
 import { IMidiEvent, EventType } from "./domain/IMidiEvent";
 import { NoteOn, NoteOff } from "./domain/midi-event";
-import { Pitch, Velocity } from "./domain/midi-event/midi-component";
+import { Pitch } from "./domain/midi-event/midi-component";
 import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
 
 export const joinMidi = (file1: IMidiFile, file2: IMidiFile): IMidiFile => {
@@ -83,8 +83,8 @@ const closeNotes = (events: IMidiEvent[]): IMidiEvent[] => {
         const noteOff = new NoteOff(
             0,
             noteOn.channel,
-            new Pitch(noteOn.pitch.Value()),
-            new Velocity(RELEASE_VELOCITY),
+            noteOn.pitch.Value(),
+            RELEASE_VELOCITY,
             runningStatus
         );
 

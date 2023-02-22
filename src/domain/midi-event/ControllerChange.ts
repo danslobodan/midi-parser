@@ -12,7 +12,7 @@
 
 import { EventType } from "../IMidiEvent";
 import { IRegularEvent } from "./IRegularEvent";
-import { Channel, ControllerNumber } from "./midi-component";
+import { ControllerNumber } from "./midi-component";
 import {
     numberTo8bitArrayVariableLength,
     numberTo8bitArray,
@@ -23,14 +23,14 @@ export class ControllerChange implements IRegularEvent {
     public controlName: string;
     public deltaTime: number;
     public type = EventType.CONTROLLER_CHANGE;
-    public channel: Channel;
+    public channel: number;
     public controllerNubmer: ControllerNumber;
     public controllerValue: number;
     public runningStatus: boolean;
 
     constructor(
         deltaTime: number,
-        channel: Channel,
+        channel: number,
         controllerNubmer: ControllerNumber,
         controllerValue: number,
         runningStatus: boolean
@@ -54,7 +54,7 @@ export class ControllerChange implements IRegularEvent {
 
         return [
             ...numberTo8bitArrayVariableLength(this.deltaTime),
-            ...numberTo8bitArray((this.type << 4) + this.channel.Value(), 1),
+            ...numberTo8bitArray((this.type << 4) + this.channel, 1),
             ...numberTo8bitArray(this.controllerNubmer, 1),
             ...numberTo8bitArray(this.controllerValue, 1),
         ];
