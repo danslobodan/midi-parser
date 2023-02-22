@@ -14,7 +14,7 @@ const start = () => {
     fs.writeFileSync("midi34.json", JSON.stringify(midi34, null, 2));
     fs.writeFileSync("midi54.json", JSON.stringify(midi54, null, 2));
 
-    const midi = joinMidi(joinMidi(midi44, midi34), midi54);
+    const midi = joinMidi([midi44, midi34, midi54]);
     // const midiFile = loadMidiFile("midi/MidiMerged_44_34_54.mid");
 
     fs.writeFileSync("result.json", JSON.stringify(midi, null, 2));

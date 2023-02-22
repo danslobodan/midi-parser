@@ -1,33 +1,43 @@
 import { IMidiFile } from "./domain/MidiFile";
-import { IMidiTrack, TRACK_HEADER_SIGNATURE } from "./domain/MidiTrack";
+import { IMidiTrack } from "./domain/MidiTrack";
 import { IMidiEvent, EventType } from "./domain/IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
 
-export const joinMany = (files: IMidiFile[]): IMidiFile => {
+export const joinMidi = (files: IMidiFile[]): IMidiFile => {
     const tracks: IMidiTrack[] = [];
+    const initialOffsets = new Array(files[0].tracks.length).fill(0);
 
-    for (let i = 1; i < files.length; i++) {}
+    files.reduce((previousOffsets: number[], currentFile: IMidiFile) => {
+        const currentFileDuration = fileDuration(currentFile);
+        const currentOffsets: number[] = [];
+        for (let i = 0; i < currentFile.tracks.length; i++) {
+            const currentTrack = currentFile.tracks[i];
+            currentOffsets[i] =
+                currentFileDuration - trackDuration(currentTrack);
+
+            if (!tracks[i])
+                tracks[i] = {
+                    ...currentTrack,
+                };
+            else {
+                const trackEvents = removeRedundantEvents(currentTrack.events);
+
+                trackEvents[0] = {
+                    ...trackEvents[0],
+                    deltaTime: trackEvents[0].deltaTime + previousOffsets[i],
+                    encode: trackEvents[0].encode,
+                };
+                tracks[i].events.pop();
+                tracks[i].events.push(...trackEvents);
+                tracks[i].lengthBytes += currentTrack.lengthBytes;
+            }
+        }
+
+        return currentOffsets;
+    }, initialOffsets);
 
     return {
         header: files[0].header,
-        tracks,
-    };
-};
-
-export const joinMidi = (file1: IMidiFile, file2: IMidiFile): IMidiFile => {
-    const tracks: IMidiTrack[] = [];
-
-    const file1Duration = fileDuration(file1);
-
-    for (let i = 0; i < file1.tracks.length; i++) {
-        const file1track = file1.tracks[i];
-        const file2track = file2.tracks[i];
-        const trackOffset = file1Duration - trackDuration(file1track);
-        tracks[i] = joinTracks(file1track, file2track, trackOffset);
-    }
-
-    return {
-        header: file1.header,
         tracks,
     };
 };
@@ -44,26 +54,8 @@ const trackDuration = (track: IMidiTrack) => {
         .reduce((result, current) => result + current, 0);
 };
 
-const joinTracks = (
-    track1: IMidiTrack,
-    track2: IMidiTrack,
-    trackOffset: number
-): IMidiTrack => {
-    const track1Events = track1.events.slice(0, -1);
-    const track2Events = removeRedundantEvents(track2);
-
-    track2Events[0].deltaTime += trackOffset;
-
-    const events = [...track1Events, ...track2Events];
-    return {
-        header: TRACK_HEADER_SIGNATURE.toString(16),
-        lengthBytes: track1.lengthBytes + track2.lengthBytes,
-        events,
-    };
-};
-
-const removeRedundantEvents = (track: IMidiTrack): IMidiEvent[] => {
-    return track.events.filter(
+const removeRedundantEvents = (events: IMidiEvent[]): IMidiEvent[] => {
+    return events.filter(
         (event) =>
             (event as IMetaEvent)?.metaType !== MetaEventType.TRACK_NAME &&
             (event as IMetaEvent)?.metaType !== MetaEventType.SET_TEMPO &&
