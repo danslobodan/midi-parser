@@ -9,7 +9,7 @@
   "tracks": [
     {
       "header": "4d54726b",
-      "lengthBytes": 41,
+      "lengthBytes": 32,
       "events": [
         {
           "type": 255,
@@ -17,7 +17,7 @@
           "metaType": 3,
           "length": 9,
           "deltaTime": 0,
-          "data": "Midi_44_1"
+          "data": "Midi_44_2"
         },
         {
           "name": "Set Tempo",
@@ -51,7 +51,7 @@
     },
     {
       "header": "4d54726b",
-      "lengthBytes": 66,
+      "lengthBytes": 69,
       "events": [
         {
           "type": 255,
@@ -150,6 +150,18 @@
             "value": 100
           },
           "runningStatus": true
+        },
+        {
+          "name": "Program Change",
+          "type": 12,
+          "deltaTime": 0,
+          "channel": {
+            "value": 0
+          },
+          "instrument": {
+            "value": 0
+          },
+          "runningStatus": false
         },
         {
           "name": "Note Off",
@@ -306,7 +318,7 @@
     },
     {
       "header": "4d54726b",
-      "lengthBytes": 100,
+      "lengthBytes": 99,
       "events": [
         {
           "type": 255,
@@ -321,7 +333,7 @@
           "type": 11,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "controllerNubmer": {
             "value": 32
@@ -336,7 +348,7 @@
           "type": 11,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "controllerNubmer": {
             "value": 0
@@ -351,7 +363,7 @@
           "type": 12,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "instrument": {
             "value": 33
@@ -363,7 +375,7 @@
           "type": 11,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "controllerNubmer": {
             "value": 32
@@ -378,7 +390,7 @@
           "type": 11,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "controllerNubmer": {
             "value": 0
@@ -393,7 +405,7 @@
           "type": 12,
           "deltaTime": 0,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "instrument": {
             "value": 33
@@ -404,7 +416,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 0,
           "pitch": {
@@ -417,10 +429,22 @@
           "runningStatus": false
         },
         {
+          "name": "Program Change",
+          "type": 12,
+          "deltaTime": 0,
+          "channel": {
+            "value": 1
+          },
+          "instrument": {
+            "value": 33
+          },
+          "runningStatus": false
+        },
+        {
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -436,7 +460,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -452,7 +476,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -468,7 +492,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -484,7 +508,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -500,7 +524,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -516,7 +540,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -532,7 +556,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -548,7 +572,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -564,7 +588,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -580,7 +604,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -596,7 +620,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -612,7 +636,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -628,7 +652,7 @@
           "name": "Note On",
           "type": 9,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -644,7 +668,7 @@
           "name": "Note Off",
           "type": 8,
           "channel": {
-            "value": 0
+            "value": 1
           },
           "deltaTime": 120,
           "pitch": {
@@ -653,22 +677,6 @@
           },
           "velocity": {
             "value": 64
-          },
-          "runningStatus": false
-        },
-        {
-          "name": "Note On",
-          "type": 9,
-          "channel": {
-            "value": 0
-          },
-          "deltaTime": 120,
-          "pitch": {
-            "value": 48,
-            "name": "C3"
-          },
-          "velocity": {
-            "value": 100
           },
           "runningStatus": false
         },
@@ -683,7 +691,7 @@
     },
     {
       "header": "4d54726b",
-      "lengthBytes": 116,
+      "lengthBytes": 109,
       "events": [
         {
           "type": 255,
@@ -1076,38 +1084,6 @@
             "value": 64
           },
           "runningStatus": false
-        },
-        {
-          "name": "Note On",
-          "type": 9,
-          "channel": {
-            "value": 9
-          },
-          "deltaTime": 0,
-          "pitch": {
-            "value": 36,
-            "name": "C2"
-          },
-          "velocity": {
-            "value": 100
-          },
-          "runningStatus": false
-        },
-        {
-          "name": "Note On",
-          "type": 9,
-          "channel": {
-            "value": 9
-          },
-          "deltaTime": 0,
-          "pitch": {
-            "value": 42,
-            "name": "F#2"
-          },
-          "velocity": {
-            "value": 100
-          },
-          "runningStatus": true
         },
         {
           "name": "End Of Track",

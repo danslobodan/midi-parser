@@ -7,12 +7,9 @@ import { joinMidi } from "./joinMidi";
 const start = () => {
     console.log("Program Started");
 
-    const midi44 = loadMidiFile("midi/Midi_44_1.mid");
-    const midi34 = loadMidiFile("midi/Midi_34_1.mid");
-    const midi54 = loadMidiFile("midi/Midi_54_1.mid");
-
-    cleanUpSecondTimeSignature(midi44);
-    cleanUpSecondTimeSignature(midi34);
+    const midi44 = loadMidiFile("midi/Midi_44_2.mid");
+    const midi34 = loadMidiFile("midi/Midi_34_2.mid");
+    const midi54 = loadMidiFile("midi/Midi_54_2.mid");
 
     fs.writeFileSync("midi44.json", JSON.stringify(midi44, null, 2));
     fs.writeFileSync("midi34.json", JSON.stringify(midi34, null, 2));
@@ -27,24 +24,6 @@ const start = () => {
 
     fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
     fs.writeFileSync("midi/generated.mid", uint);
-};
-
-const cleanUpSecondTimeSignature = (file: IMidiFile) => {
-    const maxDelta = file.tracks[0].events
-        .filter(
-            (event) =>
-                (event as IMetaEvent)?.metaType === MetaEventType.TIME_SIGNATURE
-        )
-        .map((event) => event.deltaTime)
-        .reduce((maxDelta, delta) => (maxDelta > delta ? maxDelta : delta), 0);
-
-    file.tracks[0].events = file.tracks[0].events.filter(
-        (event) =>
-            !(
-                (event as IMetaEvent)?.metaType ===
-                    MetaEventType.TIME_SIGNATURE && event.deltaTime === maxDelta
-            )
-    );
 };
 
 const loadMidiFile = (fileName: string): IMidiFile => {

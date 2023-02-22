@@ -46,7 +46,9 @@ const removeRedundantEvents = (track: IMidiTrack): IMidiEvent[] => {
     return track.events.filter(
         (event) =>
             (event as IMetaEvent)?.metaType !== MetaEventType.TRACK_NAME &&
-            (event as IMetaEvent)?.metaType !== MetaEventType.SET_TEMPO
+            (event as IMetaEvent)?.metaType !== MetaEventType.SET_TEMPO &&
+            event.type !== EventType.PROGRAM_CHANGE &&
+            event.type !== EventType.CONTROLLER_CHANGE
     );
 };
 
