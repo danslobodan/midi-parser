@@ -1,6 +1,5 @@
 import fs from "fs";
 import { DataStream } from "./DataStream";
-import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
 import { decodeFile, encodeFile, IMidiFile } from "./domain/MidiFile";
 import { joinMidi } from "./joinMidi";
 
