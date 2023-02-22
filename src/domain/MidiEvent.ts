@@ -18,8 +18,6 @@ import {
 import {
     Pitch,
     Velocity,
-    ControllerNumber,
-    ControllerValue,
     Channel,
     Instrument,
     BendValue,
@@ -70,8 +68,8 @@ const decodeRegularEvent = (
             return new ControllerChange(
                 deltaTime,
                 channel,
-                new ControllerNumber(dataStream.readInt(1)),
-                new ControllerValue(dataStream.readInt(1)),
+                dataStream.readInt(1),
+                dataStream.readInt(1),
                 runningStatus
             );
         case EventType.PITCH_BEND:

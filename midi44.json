@@ -64,31 +64,25 @@
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_LSB",
           "deltaTime": 0,
           "channel": {
             "value": 0
           },
-          "controllerNubmer": {
-            "value": 32
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 32,
+          "controllerValue": 0,
           "runningStatus": false
         },
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_MSB",
           "deltaTime": 0,
           "channel": {
             "value": 0
           },
-          "controllerNubmer": {
-            "value": 0
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 0,
+          "controllerValue": 0,
           "runningStatus": true
         },
         {
@@ -331,31 +325,25 @@
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_LSB",
           "deltaTime": 0,
           "channel": {
             "value": 1
           },
-          "controllerNubmer": {
-            "value": 32
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 32,
+          "controllerValue": 0,
           "runningStatus": false
         },
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_MSB",
           "deltaTime": 0,
           "channel": {
             "value": 1
           },
-          "controllerNubmer": {
-            "value": 0
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 0,
+          "controllerValue": 0,
           "runningStatus": true
         },
         {
@@ -373,31 +361,25 @@
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_LSB",
           "deltaTime": 0,
           "channel": {
             "value": 1
           },
-          "controllerNubmer": {
-            "value": 32
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 32,
+          "controllerValue": 0,
           "runningStatus": false
         },
         {
           "name": "Controller Change",
           "type": 11,
+          "controlName": "BANK_SELECT_MSB",
           "deltaTime": 0,
           "channel": {
             "value": 1
           },
-          "controllerNubmer": {
-            "value": 0
-          },
-          "controllerValue": {
-            "value": 0
-          },
+          "controllerNubmer": 0,
+          "controllerValue": 0,
           "runningStatus": true
         },
         {
