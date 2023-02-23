@@ -23,7 +23,7 @@ interface MidiHeader {
 
 const MIDI_FILE_SIGNATURE = 0x4d546864;
 
-export const decodeFile = (stream: IMidiStream): IMidiFile => {
+export const decode = (stream: IMidiStream): IMidiFile => {
     const midiIdentifier = stream.readInt(4);
 
     if (midiIdentifier !== MIDI_FILE_SIGNATURE) {

@@ -1,9 +1,19 @@
-import { IMidiFile } from "./domain/MidiFile";
+import { IMidiFile, decode } from "./domain/MidiFile";
 import { IMidiTrack } from "./domain/MidiTrack";
 import { IMidiEvent, EventType } from "./domain/IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
+import { createStream } from "./createMidiStream";
 
-export const joinMidi = (files: IMidiFile[]): IMidiFile => {
+export const joinMidiData = (data: DataView[]) => {
+    const files = data.map((d) => {
+        const stream = createStream(d);
+        const file = decode(stream);
+        return file;
+    });
+    return joinMidiFiles(files);
+};
+
+export const joinMidiFiles = (files: IMidiFile[]): IMidiFile => {
     const tracks: IMidiTrack[] = [];
     const initialOffsets = new Array(files[0].tracks.length).fill(0);
 
