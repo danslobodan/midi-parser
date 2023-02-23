@@ -1,5 +1,5 @@
 import fs from "fs";
-import { dataStream } from "./DataStream";
+import { createStream } from "./createMidiStream";
 import { decodeFile, encodeFile, IMidiFile } from "./domain/MidiFile";
 import { joinMidi } from "./joinMidi";
 
@@ -32,7 +32,7 @@ const loadMidiFile = (fileName: string): IMidiFile => {
         data.byteOffset,
         data.byteLength
     );
-    const stream = dataStream(dataView);
+    const stream = createStream(dataView);
     const midiFile = decodeFile(stream);
 
     return midiFile;

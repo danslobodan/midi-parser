@@ -1,4 +1,4 @@
-import { DataStream, IDataStream } from "../DataStream";
+import { DataStream, IMidiStream } from "../createMidiStream";
 
 // export const parse = (input: Uint8Array | string) => {
 //     if (input instanceof Uint8Array) return Uint8ToMidi(input);
@@ -35,7 +35,7 @@ interface RegularEvent extends MidiEvent {
 }
 
 export const Uint8ToMidi = (data: DataView) => {
-    const buffer: IDataStream = new DataStream(data);
+    const buffer: IMidiStream = new DataStream(data);
 
     //  ** read FILE HEADER
     if (buffer.readInt(4) !== 0x4d546864) {
@@ -118,7 +118,7 @@ export const Uint8ToMidi = (data: DataView) => {
     return MIDI;
 };
 
-const getTimeDivision = (file: IDataStream) => {
+const getTimeDivision = (file: IMidiStream) => {
     let timeDivisionByte1 = file.readInt(1); // get Time Division first byte
     let timeDivisionByte2 = file.readInt(1); // get Time Division second byte
 
@@ -147,7 +147,7 @@ const SET_TEMPO = 0x51;
 const SMPTE_OFFSET = 0x54;
 const TIME_SIGNATURE = 0x58;
 
-const getMetaEvent = (file: IDataStream, deltaTime: number): MetaEvent => {
+const getMetaEvent = (file: IMidiStream, deltaTime: number): MetaEvent => {
     const metaEvent: MetaEvent = {
         name: "Meta Event",
         type: 0xff, // assign metaEvent code to array
@@ -213,7 +213,7 @@ const SYSTEM_EXCLUSIVE_EVENT = 0xf;
 const END_OF_FILE = -1;
 
 const getRegularEvent = (
-    file: IDataStream,
+    file: IMidiStream,
     deltaTime: number,
     statusByte: number
 ): RegularEvent => {

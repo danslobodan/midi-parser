@@ -1,7 +1,7 @@
-import { IDataStream } from "../DataStream";
 import { decodeEvent } from "./MidiEvent";
 import { IMidiEvent } from "./IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
+import { IMidiStream } from "./IMidiStream";
 import { numberTo8bitArray } from "../toEightBit";
 
 export interface IMidiTrack {
@@ -12,7 +12,7 @@ export interface IMidiTrack {
 
 export const TRACK_HEADER_SIGNATURE = 0x4d54726b;
 
-export const decodeTrack = (dataStream: IDataStream): IMidiTrack => {
+export const decodeTrack = (dataStream: IMidiStream): IMidiTrack => {
     const lengthBytes = dataStream.readInt(4);
     const events = decodeEvents(dataStream);
 
@@ -47,7 +47,7 @@ export const encodeTrack = (midiTrack: IMidiTrack) => {
 
 const END_OF_FILE = -1;
 
-const decodeEvents = (dataStream: IDataStream): IMidiEvent[] => {
+const decodeEvents = (dataStream: IMidiStream): IMidiEvent[] => {
     const events: IMidiEvent[] = [];
 
     let deltaTime = dataStream.readIntVariableLengthValue();

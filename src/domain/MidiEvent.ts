@@ -1,4 +1,3 @@
-import { IDataStream } from "../DataStream";
 import {
     EndOfTrack,
     IntMetaEvent,
@@ -18,11 +17,12 @@ import {
     ProgramChange,
     PitchBend,
 } from "./midi-event";
+import { IMidiStream } from "./IMidiStream";
 
 export const decodeEvent = (
     deltaTime: number,
     statusByte: number,
-    dataStream: IDataStream,
+    dataStream: IMidiStream,
     runningStatus: boolean
 ): IMidiEvent => {
     if (statusByte === EventType.META_EVENT_TYPE)
@@ -32,7 +32,7 @@ export const decodeEvent = (
 };
 
 const decodeRegularEvent = (
-    dataStream: IDataStream,
+    dataStream: IMidiStream,
     deltaTime: number,
     statusByte: number,
     runningStatus: boolean
@@ -92,7 +92,7 @@ const decodeRegularEvent = (
 };
 
 const decodeMetaEvent = (
-    dataStream: IDataStream,
+    dataStream: IMidiStream,
     deltaTime: number
 ): IMetaEvent => {
     const metaType = dataStream.readInt(1);

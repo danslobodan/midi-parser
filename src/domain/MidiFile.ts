@@ -1,4 +1,4 @@
-import { IDataStream } from "../DataStream";
+import { IMidiStream } from "./IMidiStream";
 import { numberTo8bitArray } from "../toEightBit";
 import { decodeTrack, encodeTrack, IMidiTrack } from "./MidiTrack";
 
@@ -23,18 +23,18 @@ interface MidiHeader {
 
 const MIDI_FILE_SIGNATURE = 0x4d546864;
 
-export const decodeFile = (dataStream: IDataStream): IMidiFile => {
-    const midiIdentifier = dataStream.readInt(4);
+export const decodeFile = (stream: IMidiStream): IMidiFile => {
+    const midiIdentifier = stream.readInt(4);
 
     if (midiIdentifier !== MIDI_FILE_SIGNATURE) {
         throw Error("Invalid midi file header");
     }
 
-    const headerSize = dataStream.readInt(4);
-    const fileFormat: MidiFileFormat = dataStream.readInt(2);
-    const numberOfTracks = dataStream.readInt(2);
-    const timeDivision = dataStream.readInt(2);
-    const tracks = decodeTracks(dataStream, numberOfTracks);
+    const headerSize = stream.readInt(4);
+    const fileFormat: MidiFileFormat = stream.readInt(2);
+    const numberOfTracks = stream.readInt(2);
+    const timeDivision = stream.readInt(2);
+    const tracks = decodeTracks(stream, numberOfTracks);
 
     const midiFile = {
         header: {
@@ -54,7 +54,7 @@ const TRACK_HEADER_SIGNATURE = 0x4d54726b;
 const END_OF_FILE = -1;
 
 const decodeTracks = (
-    dataStream: IDataStream,
+    dataStream: IMidiStream,
     numberOfTracks: number
 ): IMidiTrack[] => {
     const tracks: IMidiTrack[] = [];
@@ -63,7 +63,8 @@ const decodeTracks = (
         const trackHeader = dataStream.readInt(4);
 
         if (trackHeader === END_OF_FILE) break;
-        if (trackHeader !== TRACK_HEADER_SIGNATURE) return tracks;
+        if (trackHeader !== TRACK_HEADER_SIGNATURE)
+            throw Error("Invalid track signature");
 
         const track = decodeTrack(dataStream);
         tracks.push(track);

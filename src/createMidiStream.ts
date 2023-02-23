@@ -1,33 +1,31 @@
-export interface IDataStream {
-    movePointer: (_bytes: number) => void;
-    readInt: (_bytes: number) => number;
-    readStr: (_bytes: number) => string;
-    readIntVariableLengthValue: () => number;
-}
+import { IMidiStream } from "./domain/IMidiStream";
 
-export const dataStream = (data: DataView): IDataStream => {
+export const END_OF_FILE = -1;
+
+export const createStream = (data: DataView): IMidiStream => {
     let pointer: number = 0;
 
     const movePointer = (bytes: number) => {
-        // move the pointer negative and positive direction
         pointer += bytes;
     };
 
+    const readByte = (): number => {
+        return data.getUint8(pointer++);
+    };
+
     const readInt = (bytes: number) => {
-        // get integer from next _bytes group (big-endian)
         bytes = Math.min(bytes, data.byteLength - pointer);
-        if (bytes < 1) return -1; // EOF
+
+        if (bytes < 1) return END_OF_FILE;
 
         let value = 0;
-        if (bytes > 1) {
-            for (let i = 1; i <= bytes - 1; i++) {
-                value += data.getUint8(pointer) * Math.pow(256, bytes - i);
-                pointer++;
-            }
+        for (let i = 1; i <= bytes; i++) {
+            const byteValue = readByte();
+            const shift = bytes - i;
+            const shiftedValue = byteValue << (shift * 8);
+            value += shiftedValue;
         }
 
-        value += data.getUint8(pointer);
-        pointer++;
         return value;
     };
 
@@ -41,7 +39,7 @@ export const dataStream = (data: DataView): IDataStream => {
 
     const readIntVariableLengthValue = () => {
         if (pointer >= data.byteLength) {
-            return -1; // EOF
+            return END_OF_FILE;
         }
 
         const bytes = [];
