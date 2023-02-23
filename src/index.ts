@@ -1,6 +1,6 @@
 import fs from "fs";
 import { createStream } from "./createMidiStream";
-import { decode, encodeFile, IMidiFile } from "./domain/MidiFile";
+import { decode, encode, IMidiFile } from "./domain/MidiFile";
 import { joinMidiData } from "./joinMidi";
 
 import { decode as decodeBase64 } from "base64-arraybuffer";
@@ -22,12 +22,11 @@ const start = () => {
 
     const midi = joinMidiData([midi44, midi34, midi54]);
 
-    fs.writeFileSync("result.json", JSON.stringify(midi, null, 2));
-    const encoded = encodeFile(midi);
-    const uint = new Uint8Array(encoded);
+    // fs.writeFileSync("result.json", JSON.stringify(midi, null, 2));
+    // const uint = new Uint8Array(midi);
 
-    fs.writeFileSync("uint.json", JSON.stringify(uint, null, 2));
-    fs.writeFileSync("midi/generated.mid", uint);
+    fs.writeFileSync("uint.json", JSON.stringify(midi, null, 2));
+    fs.writeFileSync("midi/generated.mid", midi);
 };
 
 const readAsBase64 = (fileName: string) => {

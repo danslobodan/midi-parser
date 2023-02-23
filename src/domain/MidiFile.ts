@@ -82,7 +82,7 @@ const encodeTracks = (tracks: IMidiTrack[]) => {
     return encoded;
 };
 
-export const encodeFile = (midiFile: IMidiFile): number[] => {
+export const encode = (midiFile: IMidiFile): number[] => {
     const {
         header: { headerSize, fileFormat, numberOfTracks, timeDivision },
     } = midiFile;

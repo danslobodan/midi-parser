@@ -1,4 +1,4 @@
-import { IMidiFile, decode } from "./domain/MidiFile";
+import { IMidiFile, decode, encode } from "./domain/MidiFile";
 import { IMidiTrack } from "./domain/MidiTrack";
 import { IMidiEvent, EventType } from "./domain/IMidiEvent";
 import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
@@ -10,7 +10,11 @@ export const joinMidiData = (data: DataView[]) => {
         const file = decode(stream);
         return file;
     });
-    return joinMidiFiles(files);
+
+    const joined = joinMidiFiles(files);
+    const encoded = encode(joined);
+
+    return new Uint8Array(encoded);
 };
 
 export const joinMidiFiles = (files: IMidiFile[]): IMidiFile => {
