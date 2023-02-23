@@ -1,10 +1,29 @@
-import { DataStream, IMidiStream } from "../createMidiStream";
+import { decode } from "base64-arraybuffer";
+import { createStream } from "../src/createMidiStream";
+import { IMidiStream } from "../src/domain/IMidiStream";
 
-// export const parse = (input: Uint8Array | string) => {
-//     if (input instanceof Uint8Array) return Uint8ToMidi(input);
-//     else if (typeof input === "string") return base64ToMidi(input);
-//     else throw new Error("MidiParser.parse() : Invalid input provided");
-// };
+export const parse = (input: Uint8Array | string) => {
+    if (input instanceof Uint8Array) return uint8ArrayToMidi(input);
+    else if (typeof input === "string") return base64ToMidi(input);
+    else throw new Error("MidiParser.parse() : Invalid input provided");
+};
+
+export const uint8ArrayToMidi = (array: Uint8Array) => {
+    const data = new DataView(array.buffer, array.byteOffset, array.byteLength);
+    return decodeData(data);
+};
+
+export const base64ToMidi = (base64String: string) => {
+    const arrayBuffer = decode(base64String);
+    const data = new DataView(arrayBuffer);
+
+    return decodeData(data);
+};
+
+export const decodeData = (data: DataView) => {
+    const stream = createStream(data);
+    return decodeMidiStream(stream);
+};
 
 interface MIDI {
     headerSize: number;
@@ -34,11 +53,9 @@ interface RegularEvent extends MidiEvent {
     channel: number;
 }
 
-export const Uint8ToMidi = (data: DataView) => {
-    const buffer: IMidiStream = new DataStream(data);
-
+export const decodeMidiStream = (stream: IMidiStream) => {
     //  ** read FILE HEADER
-    if (buffer.readInt(4) !== 0x4d546864) {
+    if (stream.readInt(4) !== 0x4d546864) {
         console.warn(
             "Header validation failed (not MIDI standard or file corrupt.)"
         );
@@ -46,24 +63,24 @@ export const Uint8ToMidi = (data: DataView) => {
     }
 
     const MIDI: MIDI = {
-        headerSize: buffer.readInt(4), // header size (unused var), getted just for read pointer movement
-        formatType: buffer.readInt(2), // get MIDI Format Type
-        numberOfTracks: buffer.readInt(2), // get ammount of track chunks
-        timeDivision: getTimeDivision(buffer),
+        headerSize: stream.readInt(4), // header size (unused var), getted just for read pointer movement
+        formatType: stream.readInt(2), // get MIDI Format Type
+        numberOfTracks: stream.readInt(2), // get ammount of track chunks
+        timeDivision: getTimeDivision(stream),
         track: [], // create array key for track data storing
     };
 
     //  ** read TRACK CHUNK
     for (let t = 1; t <= MIDI.numberOfTracks; t++) {
         // create new Track entry in Array
-        let headerValidation = buffer.readInt(4);
+        let headerValidation = stream.readInt(4);
 
         // EOF
         if (headerValidation === END_OF_FILE) break;
         // Track chunk header validation failed.
         if (headerValidation !== 0x4d54726b) return false;
 
-        const length = buffer.readInt(4);
+        const length = stream.readInt(4);
         // move pointer. get chunk size (bytes length)
         MIDI.track[t - 1] = { lengthBytes: length, events: [] };
 
@@ -82,10 +99,10 @@ export const Uint8ToMidi = (data: DataView) => {
             eventIndex++;
 
             // get DELTA TIME OF MIDI event (Variable Length Value)
-            const deltaTime = buffer.readIntVariableLengthValue();
+            const deltaTime = stream.readIntVariableLengthValue();
 
             // read EVENT TYPE (STATUS BYTE)
-            statusByte = buffer.readInt(1);
+            statusByte = stream.readInt(1);
 
             // EOF
             if (statusByte === END_OF_FILE) break;
@@ -96,14 +113,14 @@ export const Uint8ToMidi = (data: DataView) => {
                 // apply last loop, Status Byte
                 statusByte = laststatusByte;
                 // move back the pointer (cause read byte is not a status byte)
-                buffer.movePointer(-1);
+                stream.movePointer(-1);
             }
 
             const META_EVENT_TYPE = 0xff;
             const midiEvent: MidiEvent =
                 statusByte === META_EVENT_TYPE
-                    ? getMetaEvent(buffer, deltaTime)
-                    : getRegularEvent(buffer, deltaTime, statusByte);
+                    ? getMetaEvent(stream, deltaTime)
+                    : getRegularEvent(stream, deltaTime, statusByte);
 
             MIDI.track[t - 1].events[eventIndex - 1] = midiEvent;
 
@@ -280,67 +297,3 @@ const getName = (type: number) => {
             return "Unknown";
     }
 };
-
-// const base64ToMidi = (base64String: string) => {
-//     const raw = atob(base64String);
-
-//     const rawLength = raw.length;
-//     const uint8Array = new Uint8Array(new ArrayBuffer(rawLength));
-
-//     for (let i = 0; i < rawLength; i++) uint8Array[i] = raw.charCodeAt(i);
-
-//     console.log(uint8Array);
-
-//     return Uint8ToMidi(uint8Array);
-// };
-
-// const atob = (inputString: string) => {
-//     // base64 character set, plus padding character (=)
-//     const b64 =
-//         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-
-//     // Regular expression to check formal correctness of base64 encoded strings
-//     const b64re =
-//         /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
-
-//     // remove data type signatures at the begining of the string
-//     // eg :  "data:audio/mid;base64,"
-//     let string = inputString.replace(/^.*?base64,/, "");
-
-//     // atob can work with strings with whitespaces, even inside the encoded part,
-//     // but only \t, \n, \f, \r and ' ', which can be stripped.
-//     string = String(string).replace(/[\t\n\f\r ]+/g, "");
-
-//     if (!b64re.test(string))
-//         throw new TypeError(
-//             "Failed to execute _atob() : The string to be decoded is not correctly encoded."
-//         );
-
-//     // Adding the padding if missing, for simplicity
-//     string += "==".slice(2 - (string.length & 3));
-
-//     let bitmap,
-//         result = "";
-//     let r1, r2;
-
-//     for (let i = 0; i < string.length; ) {
-//         bitmap =
-//             (b64.indexOf(string.charAt(i++)) << 18) |
-//             (b64.indexOf(string.charAt(i++)) << 12) |
-//             ((r1 = b64.indexOf(string.charAt(i++))) << 6) |
-//             (r2 = b64.indexOf(string.charAt(i++)));
-
-//         result +=
-//             r1 === 64
-//                 ? String.fromCharCode((bitmap >> 16) & 255)
-//                 : r2 === 64
-//                 ? String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255)
-//                 : String.fromCharCode(
-//                       (bitmap >> 16) & 255,
-//                       (bitmap >> 8) & 255,
-//                       bitmap & 255
-//                   );
-//     }
-
-//     return result;
-// };
