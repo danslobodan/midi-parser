@@ -1,4 +1,4 @@
-import { DataStream, IDataStream } from "../DataStream";
+import { IDataStream } from "../DataStream";
 import { numberTo8bitArray } from "../toEightBit";
 import { decodeTrack, encodeTrack, IMidiTrack } from "./MidiTrack";
 
@@ -23,7 +23,7 @@ interface MidiHeader {
 
 const MIDI_FILE_SIGNATURE = 0x4d546864;
 
-export const decodeFile = (dataStream: DataStream): IMidiFile => {
+export const decodeFile = (dataStream: IDataStream): IMidiFile => {
     const midiIdentifier = dataStream.readInt(4);
 
     if (midiIdentifier !== MIDI_FILE_SIGNATURE) {

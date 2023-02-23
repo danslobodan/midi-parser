@@ -1,53 +1,46 @@
-interface IDataStream {
-    movePointer: (_bytes: number) => number;
+export interface IDataStream {
+    movePointer: (_bytes: number) => void;
     readInt: (_bytes: number) => number;
     readStr: (_bytes: number) => string;
     readIntVariableLengthValue: () => number;
 }
 
-class DataStream implements IDataStream {
-    private data: DataView;
-    private pointer: number = 0;
+export const dataStream = (data: DataView): IDataStream => {
+    let pointer: number = 0;
 
-    constructor(data: DataView) {
-        this.data = data;
-    }
-
-    public movePointer(bytes: number) {
+    const movePointer = (bytes: number) => {
         // move the pointer negative and positive direction
-        this.pointer += bytes;
-        return this.pointer;
-    }
+        pointer += bytes;
+    };
 
-    public readInt(bytes: number) {
+    const readInt = (bytes: number) => {
         // get integer from next _bytes group (big-endian)
-        bytes = Math.min(bytes, this.data.byteLength - this.pointer);
+        bytes = Math.min(bytes, data.byteLength - pointer);
         if (bytes < 1) return -1; // EOF
 
         let value = 0;
         if (bytes > 1) {
             for (let i = 1; i <= bytes - 1; i++) {
-                value +=
-                    this.data.getUint8(this.pointer) * Math.pow(256, bytes - i);
-                this.pointer++;
+                value += data.getUint8(pointer) * Math.pow(256, bytes - i);
+                pointer++;
             }
         }
 
-        value += this.data.getUint8(this.pointer);
-        this.pointer++;
+        value += data.getUint8(pointer);
+        pointer++;
         return value;
-    }
+    };
 
-    public readStr(bytes: number) {
+    const readStr = (bytes: number) => {
         // read as ASCII chars, the followoing _bytes
         let text = "";
         for (let char = 1; char <= bytes; char++)
-            text += String.fromCharCode(this.readInt(1));
+            text += String.fromCharCode(readInt(1));
         return text;
-    }
+    };
 
-    public readIntVariableLengthValue() {
-        if (this.pointer >= this.data.byteLength) {
+    const readIntVariableLengthValue = () => {
+        if (pointer >= data.byteLength) {
             return -1; // EOF
         }
 
@@ -55,7 +48,7 @@ class DataStream implements IDataStream {
 
         const CONTINUATION_BIT = 0b10000000;
         while (true) {
-            const valueByte = this.readInt(1);
+            const valueByte = readInt(1);
             const value7bit = valueByte & ~CONTINUATION_BIT;
             bytes.push(value7bit);
 
@@ -69,8 +62,12 @@ class DataStream implements IDataStream {
         }
 
         return value;
-    }
-}
+    };
 
-export { DataStream };
-export type { IDataStream };
+    return {
+        movePointer,
+        readInt,
+        readStr,
+        readIntVariableLengthValue,
+    };
+};
