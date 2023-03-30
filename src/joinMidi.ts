@@ -1,57 +1,60 @@
-import { IMidiFile, decode, encode } from "./domain/MidiFile";
-import { IMidiTrack } from "./domain/MidiTrack";
-import { IMidiEvent, EventType } from "./domain/IMidiEvent";
-import { IMetaEvent, MetaEventType } from "./domain/meta-events/IMetaEvent";
-import { createStream } from "./createMidiStream";
+import { IMidiFile, encodeFile } from './domain/MidiFile';
+import { IMidiTrack } from './domain/MidiTrack';
+import { IMidiEvent, EventType } from './domain/IMidiEvent';
+import { IMetaEvent, MetaEventType } from './domain/meta-events/IMetaEvent';
+import { IMidiMap } from './application/midiMap';
 
-export const joinMidiData = (data: DataView[]) => {
-    const files = data.map((d) => {
-        const stream = createStream(d);
-        const file = decode(stream);
-        return file;
-    });
-
-    const joined = joinMidiFiles(files);
-    const encoded = encode(joined);
-
-    return new Uint8Array(encoded);
+export const joinMidiRepeat = (
+    keys: string[],
+    map: IMidiMap,
+    repeatTimes: number
+): IMidiFile => {
+    const repeatedKeys: string[] = [].concat(...Array(repeatTimes).fill(keys));
+    return joinMidiFiles(repeatedKeys, map);
 };
 
-export const joinMidiFiles = (files: IMidiFile[]): IMidiFile => {
+export const joinMidiFiles = (keys: string[], map: IMidiMap): IMidiFile => {
     const tracks: IMidiTrack[] = [];
-    const initialOffsets = new Array(files[0].tracks.length).fill(0);
+    const firstFile = map[keys[0]];
+    let previousOffsets = new Array(firstFile.tracks.length).fill(0);
 
-    files.reduce((previousOffsets: number[], currentFile: IMidiFile) => {
-        const currentFileDuration = fileDuration(currentFile);
+    keys.forEach((key) => {
+        const file = map[key];
+        const currentFileDuration = fileDuration(file);
+
         const currentOffsets: number[] = [];
-        for (let i = 0; i < currentFile.tracks.length; i++) {
-            const currentTrack = currentFile.tracks[i];
-            currentOffsets[i] =
-                currentFileDuration - trackDuration(currentTrack);
 
-            if (!tracks[i])
-                tracks[i] = {
-                    ...currentTrack,
+        file.tracks.forEach((track, j) => {
+            currentOffsets[j] = currentFileDuration - trackDuration(track);
+            const trackEvents = removeRedundantEvents(track.events);
+
+            if (!tracks[j]) {
+                tracks[j] = {
+                    header: track.header,
+                    events: [...track.events],
+                    lengthBytes: track.lengthBytes,
                 };
-            else {
-                const trackEvents = removeRedundantEvents(currentTrack.events);
-
+            } else {
                 trackEvents[0] = {
                     ...trackEvents[0],
-                    deltaTime: trackEvents[0].deltaTime + previousOffsets[i],
-                    encode: trackEvents[0].encode,
+                    deltaTime: trackEvents[0].deltaTime + previousOffsets[j],
                 };
-                tracks[i].events.pop();
-                tracks[i].events.push(...trackEvents);
-                tracks[i].lengthBytes += currentTrack.lengthBytes;
-            }
-        }
 
-        return currentOffsets;
-    }, initialOffsets);
+                tracks[j].events = [
+                    ...tracks[j].events.slice(0, -1),
+                    ...trackEvents,
+                ];
+                tracks[j].lengthBytes += track.lengthBytes;
+            }
+        });
+
+        previousOffsets = currentOffsets;
+    });
 
     return {
-        header: files[0].header,
+        header: {
+            ...firstFile.header,
+        },
         tracks,
     };
 };

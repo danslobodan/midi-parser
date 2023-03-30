@@ -1,8 +1,8 @@
-import { decodeEvent } from "./MidiEvent";
-import { IMidiEvent } from "./IMidiEvent";
-import { IMetaEvent, MetaEventType } from "./meta-events/IMetaEvent";
-import { IMidiStream } from "./IMidiStream";
-import { numberTo8bitArray } from "../toEightBit";
+import { decodeEvent, encodeEvent } from './MidiEvent';
+import { IMidiEvent } from './IMidiEvent';
+import { IMetaEvent, MetaEventType } from './meta-events/IMetaEvent';
+import { IMidiStream } from './IMidiStream';
+import { numberTo8bitArray } from '../toEightBit';
 
 export interface IMidiTrack {
     header: string;
@@ -26,7 +26,7 @@ export const decodeTrack = (dataStream: IMidiStream): IMidiTrack => {
 const encodeEvents = (events: IMidiEvent[]): number[] => {
     const encoded: number[] = [];
     for (let i = 0; i < events.length; i++) {
-        const encodedEvent = events[i].encode();
+        const encodedEvent = encodeEvent(events[i]);
         encoded.push(...encodedEvent);
     }
 

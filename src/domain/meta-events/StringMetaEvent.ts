@@ -1,13 +1,8 @@
-import {
-    numberTo8bitArrayVariableLength,
-    stringTo8BitArray,
-    numberTo8bitArray,
-} from "../../toEightBit";
-import { EventType } from "../IMidiEvent";
-import { IMetaEvent, MetaEventType } from "./IMetaEvent";
+import { EventType } from '../IMidiEvent';
+import { IMetaEvent, MetaEventType } from './IMetaEvent';
 
 class StringMetaEvent implements IMetaEvent {
-    public name: string;
+    public eventName: string;
     public deltaTime: number;
     public type = EventType.META_EVENT_TYPE;
     public metaType: MetaEventType;
@@ -20,22 +15,11 @@ class StringMetaEvent implements IMetaEvent {
         length: number,
         data: string
     ) {
-        this.name = MetaEventType[metaType] || "Unkown Sytem Message";
+        this.eventName = MetaEventType[metaType] || 'Unkown Sytem Message';
         this.metaType = metaType;
         this.length = length;
         this.deltaTime = deltaTime;
         this.data = data;
-    }
-
-    public encode(): number[] {
-        const arr = [
-            ...numberTo8bitArrayVariableLength(this.deltaTime),
-            ...numberTo8bitArray(this.type, 1),
-            ...numberTo8bitArray(this.metaType, 1),
-            ...numberTo8bitArrayVariableLength(this.length),
-            ...stringTo8BitArray(this.data),
-        ];
-        return arr;
     }
 }
 

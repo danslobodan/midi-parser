@@ -11,8 +11,8 @@ export enum EventType {
 }
 
 export interface IMidiEvent {
-    name: string;
+    eventName: string;
     deltaTime: number;
     type: EventType;
-    encode: () => number[];
+    length: number;
 }

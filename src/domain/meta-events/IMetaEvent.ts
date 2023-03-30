@@ -1,4 +1,4 @@
-import { IMidiEvent } from "../IMidiEvent";
+import { IMidiEvent } from '../IMidiEvent';
 
 export enum MetaEventType {
     TEXT_EVENT = 0x01,
@@ -19,5 +19,5 @@ export enum MetaEventType {
 
 export interface IMetaEvent extends IMidiEvent {
     metaType: MetaEventType;
-    length: number;
+    data?: string | number | number[];
 }
